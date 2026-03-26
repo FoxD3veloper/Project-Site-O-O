@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Werken bij Verwelius</title>
+<link rel="icon" type="image/png" href="verwelius-logo-023-large copy.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --header-height: 80px;
+  --logo-scale: 50px;
+  --footer-height: 650px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-height: 100px;
+    --logo-scale: 65px;
+    --footer-height: 550px;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", Arial, sans-serif;
+  line-height: 1.3;
+  background-color: #000;
+  overflow-x: hidden;
+}
+
+.page-wrapper {
+  position: relative;
+  min-height: 100vh;
+  background-image: url("Verwelius - Background .jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  margin-bottom: var(--footer-height);
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: var(--header-height);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  z-index: 1000;
+}
+
+.arrow-container {
+  position: absolute;
+  left: 5%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: none;
+}
+
+.chevron-down {
+  width: 14px;
+  height: 14px;
+  border-right: 1.5px solid #000;
+  border-bottom: 1.5px solid #000;
+  transform: rotate(45deg);
+  margin-top: -4px;
+}
+
+.logo-header {
+  height: var(--logo-scale);
+  width: auto;
+}
+
+.main-content {
+  padding-top: calc(var(--header-height) + 40px);
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-left: 5%;
+  padding-right: 5%;
+  box-sizing: border-box;
+}
+
+.content-card {
+  background: rgba(220, 220, 220, 0.9);
+  flex: 0 0 550px;
+  padding: 35px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.jobs-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.job-button {
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 400;
+  text-align: left;
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  /* Animatie instellingen */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  left: 0;
+}
+
+.job-button:hover {
+  background: rgba(255, 255, 255, 1);
+  color: #000;
+  border-color: #fff;
+  /* Schuif 5px naar rechts bij hover */
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+h2 { margin: 0 0 10px 0; font-size: 22px; font-weight: 700; color: #000; }
+h3 { margin: 15px 0 5px 0; font-size: 18px; font-weight: 700; color: #000; }
+p { margin: 0 0 10px 0; color: #1a1a1a; font-size: 15px; font-weight: 400; }
+
+.card-logo {
+  margin-top: 20px;
+  height: 45px;
+  width: auto;
+  align-self: flex-start;
+}
+
+.footer-reveal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--footer-height);
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+  width: 90%;
+  max-width: 1100px;
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+.column a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 300;
+}
+
+.column-title {
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: 25px;
+  margin-bottom: 12px;
+  text-transform: lowercase;
+}
+
+.footer-info {
+  border-top: 1px solid #333;
+  padding-top: 25px;
+  font-size: 12px;
+  width: 90%;
+  max-width: 1100px;
+  text-align: center;
+}
+
+.footer-image {
+  margin-top: 30px;
+  max-height: 45px;
+}
+
+@media (max-width: 1023px) {
+  .main-content {
+    flex-direction: column;
+  }
+  .content-card {
+    flex: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <button class="arrow-container" id="menuButton">
+    <div class="chevron-down"></div>
+  </button>
+  <img src="verwelius-logo-023-large copy.png" alt="Logo" class="logo-header">
+</header>
+
+<div class="page-wrapper">
+  <main class="main-content">
+    <div class="content-card">
+      <h2>Werken bij Verwelius</h2>
+      <p>Bij Verwelius werk je in projectontwikkeling, bouw of vastgoedbeheer. Je komt terecht bij een daadkrachtig en financieel gezond familiebedrijf, met uitdagende projecten in woningbouw en commercieel vastgoed.</p>
+      <p>Met een prettige werksfeer en een platte organisatie werken we samen aan kwaliteit en resultaat. Vanuit ons hoofdkantoor in Huizen en op onze bouwlocaties bouwen we samen aan de toekomst.</p>
+      <h3>Vacatures</h3>
+      <p>Je kunt bij Verwelius instromen in diverse functies. Of je nu ervaren bent of net begint, er zijn volop mogelijkheden om te groeien.</p>
+      <h3>Arbeidsvoorwaarden</h3>
+      <p>Wij bieden uitstekende, moderne arbeidsvoorwaarden, met onder meer personeelsregelingen zoals bedrijfsfitness en korting op de collectieve zorgverzekering.</p>
+      <img src="verwelius-logo-026-large copy.png" alt="Logo" class="card-logo">
+    </div>
+
+    <div class="jobs-container">
+      <a href="javascript:void(0)" class="job-button">Gebiedsontwikkelaar</a>
+      <a href="javascript:void(0)" class="job-button">Commercieel en Technisch Beheerder Vastgoed</a>
+      <a href="javascript:void(0)" class="job-button">Uitvoerders Woningbouw</a>
+      <a href="javascript:void(0)" class="job-button">Binnendienst Medewerker Onderhoud en Beheer</a>
+      <a href="javascript:void(0)" class="job-button">Junior/Medior/Senior Werkvoorbereider</a>
+      <a href="javascript:void(0)" class="job-button">Leerling Timmerman</a>
+      <a href="javascript:void(0)" class="job-button">Technisch Medewerker Buitendienst</a>
+      <a href="javascript:void(0)" class="job-button">(Afstudeer) Stages</a>
+    </div>
+  </main>
+</div>
+
+<footer class="footer-reveal">
+  <div class="footer-columns">
+    <div class="column">
+      <a href="javascript:void(0)">home •</a>
+      <a href="javascript:void(0)">over Verwelius</a>
+      <a href="javascript:void(0)">onze kracht</a>
+      <a href="javascript:void(0)">aan- en verkoop</a>
+      <a href="javascript:void(0)">contact</a>
+    </div>
+    <div class="column">
+      <a href="javascript:void(0)">Nederlands •</a>
+      <a href="javascript:void(0)">English</a>
+      <a href="javascript:void(0)">Español</a>
+      <div class="column-title">overig</div>
+      <a href="javascript:void(0)">cookie informatie</a>
+      <a href="javascript:void(0)">privacyverklaring</a>
+      <a href="javascript:void(0)">disclaimer</a>
+      <a href="javascript:void(0)">colofon</a>
+    </div>
+    <div class="column">
+      <a href="javascript:void(0)">algemene website</a>
+      <a href="javascript:void(0)">huurportaal</a>
+      <a href="javascript:void(0)">werken bij Verwelius</a>
+      <div class="column-title">project websites</div>
+      <a href="javascript:void(0)">aan de Braassem</a>
+      <a href="javascript:void(0)">de Grift</a>
+      <a href="javascript:void(0)">de Verbinding Zwammerdam</a>
+      <br>
+      <a href="javascript:void(0)">de Notentuin</a>
+      <a href="javascript:void(0)">Thuis in Huizen</a>
+      <a href="javascript:void(0)">Roots Lelystad</a>
+      <a href="javascript:void(0)">De Baarnsche Zoom</a>
+    </div>
+  </div>
+  <div class="footer-info">
+    © 2026 Verwelius Holding B.V. &nbsp;•&nbsp; Postbus 323, 1270 AH Huizen &nbsp;•&nbsp; Energieweg 2, 1271 ED Huizen &nbsp;•&nbsp; T 035 - 528 40 00
+  </div>
+  <img src="verwelius-logo-031-large copy.png" alt="Logo" class="footer-image">
+</footer>
+
+</body>
+</html>
