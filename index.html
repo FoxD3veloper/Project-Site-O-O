@@ -10,7 +10,7 @@
 :root {
   --header-height: clamp(60px, 10vh, 100px);
   --logo-scale: clamp(40px, 6vh, 65px);
-  --footer-real-height: 600px;
+  --footer-real-height: 680px;
 }
 
 body {
@@ -66,9 +66,7 @@ body {
   transition: opacity 0.3s;
 }
 
-.arrow-container:hover {
-  opacity: 0.5;
-}
+.arrow-container:hover { opacity: 0.5; }
 
 .chevron-down {
   width: 12px;
@@ -82,6 +80,7 @@ body {
 .logo-header {
   height: var(--logo-scale);
   width: auto;
+  object-fit: contain;
 }
 
 .main-content {
@@ -109,6 +108,22 @@ body {
   flex-direction: column;
 }
 
+#main-text, .job-content {
+  max-height: 65vh;
+  overflow-y: auto;
+  padding-right: 15px;
+}
+
+.job-content { display: none; flex-direction: column; }
+
+#main-text::-webkit-scrollbar, .job-content::-webkit-scrollbar {
+  width: 4px;
+}
+#main-text::-webkit-scrollbar-thumb, .job-content::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.1);
+  border-radius: 10px;
+}
+
 .jobs-container {
   flex: 1 1 350px;
   display: flex;
@@ -116,34 +131,46 @@ body {
   gap: 12px;
 }
 
-.job-button {
-  background: rgba(0, 0, 0, 0.5);
+.job-button, .back-btn {
+  background: rgba(28, 28, 28, 0.85);
   color: #fff;
   text-decoration: none;
-  padding: 15px 20px;
+  padding: 18px 25px;
   border-radius: 4px;
   font-size: clamp(14px, 1.1vw, 15px);
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.1);
   backdrop-filter: blur(5px);
   transition: all 0.3s ease;
   text-align: left;
+  display: block;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
-.job-button:hover {
+.job-button:hover, .back-btn:hover {
   background: #fff;
   color: #000;
   transform: translateX(10px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.back-btn {
+  display: none;
 }
 
 h2 { margin: 0 0 15px 0; font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 700; color: #000; }
 h3 { margin: 25px 0 10px 0; font-size: clamp(1.1rem, 2vw, 1.3rem); font-weight: 700; color: #000; }
 p { margin: 0 0 15px 0; color: #1a1a1a; font-size: clamp(0.9rem, 1vw, 1rem); }
+ul { margin: 0 0 20px 0; padding-left: 20px; color: #1a1a1a; font-size: clamp(0.9rem, 1vw, 1rem); }
+li { margin-bottom: 8px; }
 
 .card-logo {
   margin-top: 25px;
   height: 45px;
   width: auto;
   align-self: flex-start;
+  object-fit: contain;
 }
 
 .footer-reveal {
@@ -159,7 +186,7 @@ p { margin: 0 0 15px 0; color: #1a1a1a; font-size: clamp(0.9rem, 1vw, 1rem); }
   align-items: center;
   justify-content: center;
   z-index: 1;
-  padding: 60px 0 40px 0;
+  padding: 60px 0 0 0;
   box-sizing: border-box;
 }
 
@@ -172,51 +199,33 @@ p { margin: 0 0 15px 0; color: #1a1a1a; font-size: clamp(0.9rem, 1vw, 1rem); }
   align-items: start;
 }
 
-.column-title {
-  color: #fff;
-  font-weight: 700;
-  font-size: 14px;
-  margin-bottom: 18px;
-  letter-spacing: 0.5px;
-}
-
-.column a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 15px;
-  margin-bottom: 10px;
-  display: block;
-  font-weight: 300;
-  transition: opacity 0.2s;
-}
-
+.column-title { color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 18px; letter-spacing: 0.5px; }
+.column a { color: #fff; text-decoration: none; font-size: 15px; margin-bottom: 10px; display: block; font-weight: 300; transition: opacity 0.2s; }
 .column a:hover { opacity: 0.7; }
-
-.sub-section {
-  margin-top: 40px;
-}
+.sub-section { margin-top: 40px; }
 
 .footer-info {
   border-top: 1px solid #333;
   margin-top: 50px;
   padding-top: 25px;
-  font-size: 12px;
+  padding-bottom: 80px;
+  font-size: 13px;
   width: 90%;
   max-width: 1100px;
   text-align: center;
   font-weight: 300;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
 }
 
-.footer-image {
-  margin-top: 35px;
-  max-height: 45px;
-  align-self: center;
-}
+.footer-logo-bottom { height: 45px; width: auto; object-fit: contain; }
 
 @media (max-width: 1024px) {
   .main-content { flex-direction: column; align-items: center; }
-  .content-card, .jobs-container { width: 100%; max-width: 100%; }
+  .content-card { width: 100%; max-width: 100%; }
   .page-wrapper { margin-bottom: 0 !important; }
   .footer-reveal { position: relative; height: auto; }
   .footer-columns { grid-template-columns: 1fr; gap: 30px; text-align: center; }
@@ -226,32 +235,156 @@ p { margin: 0 0 15px 0; color: #1a1a1a; font-size: clamp(0.9rem, 1vw, 1rem); }
 <body>
 
 <header class="header">
-  <button class="arrow-container" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})">
+  <button id="nav-arrow" class="arrow-container" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})">
     <div class="chevron-down"></div>
   </button>
   <img src="verwelius-logo-023-large copy.png" alt="Logo" class="logo-header">
 </header>
 
-<div class="page-wrapper">
+<div class="page-wrapper" id="wrapper">
   <main class="main-content">
     <div class="content-card">
-      <h2 data-key="title">Werken bij Verwelius</h2>
-      <p data-key="intro1">Bij Verwelius werk je in projectontwikkeling, bouw of vastgoedbeheer. Je komt terecht bij een daadkrachtig en financieel gezond familiebedrijf, met uitdagende projecten in woningbouw en commercieel vastgoed.</p>
-      <p data-key="intro2">Met een prettige werksfeer en een platte organisatie werken we samen aan kwaliteit en resultaat.</p>
-      <h3 data-key="vacancies_title">Vacatures</h3>
-      <p data-key="vacancies_text">Je kunt bij Verwelius instromen in diverse functies. Of je nu ervaren bent of net begint, er zijn volop mogelijkheden om te groeien.</p>
-      <h3 data-key="terms_title">Arbeidsvoorwaarden</h3>
-      <p data-key="terms_text">Wij bieden uitstekende, moderne arbeidsvoorwaarden, met onder meer personeelsregelingen zoals bedrijfsfitness.</p>
+      
+      <div id="main-text">
+        <h2>Werken bij Verwelius</h2>
+        <p>Bij Verwelius werk je in projectontwikkeling, bouw of vastgoedbeheer. Je komt terecht bij een daadkrachtig en financieel gezond familiebedrijf, met uitdagende projecten in woningbouw en commercieel vastgoed.</p>
+        <p>Met een prettige werksfeer en een platte organisatie werken we samen aan kwaliteit en resultaat.</p>
+        <h3>Vacatures</h3>
+        <p>Je kunt bij Verwelius instromen in diverse functies. Of je nu ervaren bent of net begint, er zijn volop mogelijkheden om te groeien.</p>
+        <h3>Arbeidsvoorwaarden</h3>
+        <p>Wij bieden uitstekende, moderne arbeidsvoorwaarden, met onder meer personeelsregelingen zoals bedrijfsfitness.</p>
+      </div>
+
+      <div id="job1" class="job-content">
+        <h2>Gebiedsontwikkelaar</h2>
+        <p>Als gebiedsontwikkelaar ben je de spil in het proces van initiatief tot en met realisatie. Dit doe je door betrokken leiderschap te tonen en coachend te werk te gaan. Door je financiële bewustheid ben je onderscheidend en stuur je het proces naar een goede prijs/kwaliteitverhouding. Je signaleert de kansen en elimineert de risico’s, werkt proactief en hebt een goede helicopterview, waarmee je de hoofdlijnen kunt bewaken en indien nodig ook op het detailniveau kunt bijsturen.</p>
+        <p>Bij Verwelius ben je actief binnen de ontwikkelafdeling. Je werkt bij een slagvaardig en financieel uiterst gezond familiebedrijf dat bekend staat als een daadkrachtige ontwikkelaar en kwaliteitsbouwer. Daarnaast beheert, belegt en financiert Bouwmaatschappij Verwelius in uiteenlopende projecten op gebied van woningbouw (grondgebonden en hoogbouw) en commercieel onroerend goed. De functie wordt in nauw overleg met de directeur uitgeoefend.</p>
+        <p>In een goede werksfeer en met een platte structuur realiseer je uitdagende projecten waarbij plezier in je werk essentieel is. We vergeten niet dat onze mensen de projecten maken en daarmee onze gezamenlijke toekomst. Dit doen we met elkaar op ons hoofdkantoor in Huizen of op één van de vele bouwlocaties waar we actief zijn.</p>
+        <h3>Taken:</h3>
+        <ul>
+          <li>Verantwoordelijk voor de voortgang van de gebiedsontwikkelingen incl. alle bijbehorende onderdelen;</li>
+          <li>Adviesrol (technische planontwikkeling) bij Bouwmaatschappij Verwelius;</li>
+          <li>Opstellen stichtingskosten opzet en haalbaarheidsstudies;</li>
+          <li>Acquisitie, verervingen, tenders;</li>
+          <li>Risico’s in projecten signaleren, analyseren en elimineren;</li>
+          <li>Het beheren en zorgdragen van een effectieve informatiestroom.</li>
+        </ul>
+        <h3>Functie-eisen:</h3>
+        <ul>
+          <li>Afgeronde HBO/WO opleiding richting Bouwkunde of Bouwtechnische bedrijfskunde;</li>
+          <li>Ervaring met grondgebonden en hoogbouw woonprojecten;</li>
+          <li>Ervaring met gietbouwsystemen;</li>
+          <li>Goede bouwkundige (detail-)kennis;</li>
+          <li>Sturen op GOTIK aspecten, incl. risico’s en kansen;</li>
+          <li>Geen 9-5 mentaliteit.</li>
+        </ul>
+        <p>Voor meer informatie kunt u contact opnemen met de heer S. Stappers, directeur, <a href="mailto:sstappers@verwelius.nl">sstappers@verwelius.nl</a></p>
+      </div>
+
+      <div id="job2" class="job-content">
+        <h2>Commercieel en technisch beheerder vastgoed</h2>
+        <p>Verwelius bezit als belegger een groot aantal huurwoningen en appartementen. In omvang zijn wij vergelijkbaar met een middelgrote woningbouwvereniging. Daarnaast zijn wij eigenaar van divers commercieel onroerend goed, zoals kantoorcomplexen en winkelpanden.</p>
+        <p>Vanwege een steeds groter wordende vastgoedportefeuille, zijn wij op zoek naar een ambitieuze Commercieel en Technisch Beheerder Vastgoed voor onze afdeling Onderhoud en Beheer.</p>
+        <h3>Taken:</h3>
+        <ul>
+          <li>Commercieel beheer van vastgoedportefeuille;</li>
+          <li>Beheer van het huurmutatieproces en contractvorming;</li>
+          <li>Financiële quick-scans en selectie van kandidaat-huurders;</li>
+          <li>Toezicht en handhaving woonfraude;</li>
+          <li>Opstellen van MeerjarenOnderhoudsPlanning (MJOP);</li>
+          <li>Opdrachten verstrekken aan onderaannemers en aansturen buitendienst;</li>
+          <li>Voorinspecties en opleveringen van mutaties.</li>
+        </ul>
+        <h3>Functie-eisen:</h3>
+        <ul>
+          <li>Gedegen technische basiskennis met een goed gevoel voor commercie;</li>
+          <li>Vaardig met 4PS of gelijkwaardig softwarepakket;</li>
+          <li>Praktisch, no-nonsense, goed kunnen plannen;</li>
+          <li>Communicatief vaardig (Nederlands en Engels);</li>
+          <li>Woonachtig nabij Huizen.</li>
+        </ul>
+        <p>Cv’s kunnen gestuurd worden aan dhr. Marc van Veldhuizen: <a href="mailto:mvanveldhuizen@verwelius.nl">mvanveldhuizen@verwelius.nl</a></p>
+      </div>
+
+      <div id="job3" class="job-content">
+        <h2>Uitvoerders woningbouw</h2>
+        <p>Vanwege het opstarten van twee nieuwbouwprojecten in Huizen (Havenzicht en Oude Haven), zijn wij op zoek naar Uitvoerders woningbouw.</p>
+        <h3>Taken:</h3>
+        <p>Als uitvoerder werk je samen met een ervaren Hoofduitvoerder. Je controleert of werkzaamheden volgens opdracht en tekening worden uitgevoerd en bewaakt de veiligheid en planning. Je stuurt eigen bouwplaatspersoneel aan en zorgt voor orde en netheid.</p>
+        <p>Je hebt de ambitie om binnen enkele jaren door te groeien naar hoofduitvoerder. Je durft verantwoordelijkheid te nemen en bent zeer prestatiegericht.</p>
+        <h3>Functie-eisen:</h3>
+        <ul>
+          <li>Tenminste een mbo-opleiding Bouwkunde;</li>
+          <li>Daadkrachtige en pragmatische persoonlijkheid;</li>
+          <li>Ambitieus en leergierig;</li>
+          <li>Schoolverlaters (mbo/hbo) worden nadrukkelijk uitgenodigd.</li>
+        </ul>
+        <p>Geïnteresseerd? Stuur je CV naar: <a href="mailto:vacancies@verwelius.nl">vacancies@verwelius.nl</a></p>
+      </div>
+
+      <div id="job4" class="job-content">
+        <h2>Binnendienst Medewerker Onderhoud en Beheer</h2>
+        <p>De afdeling Onderhoud en Beheer verzorgt het technisch en administratief beheer van onze vastgoedportefeuille. Vanwege groei zoeken wij een ambitieuze Binnendienst Medewerker.</p>
+        <h3>Taken:</h3>
+        <ul>
+          <li>Begeleiden van MJOP en EPV-monitoring;</li>
+          <li>Opdrachten verstrekken aan onderaannemers;</li>
+          <li>Inplannen van eigen medewerkers buitendienst;</li>
+          <li>Voorinspecties uitvoeren bij mutaties en financiële afronding;</li>
+          <li>Administratief verwerken en archiveren van werkzaamheden.</li>
+        </ul>
+        <h3>Functie-eisen:</h3>
+        <ul>
+          <li>Uitstekende kennis van Word, Excel en Outlook;</li>
+          <li>Goede beheersing van Nederlands en Engels;</li>
+          <li>Zelfstandig, doelgericht en nauwkeurig;</li>
+          <li>Basiskennis van elektra-, loodgieters- en timmerwerk is een pré.</li>
+        </ul>
+        <p>Stuur je CV naar dhr. Marc van Veldhuizen: <a href="mailto:mvanveldhuizen@verwelius.nl">mvanveldhuizen@verwelius.nl</a></p>
+      </div>
+
+      <div id="job5" class="job-content">
+        <h2>Junior/Medior/Senior Werkvoorbereider</h2>
+        <p>Wij zoeken een ambitieuze Bouwkundige voor de afdeling Werkvoorbereiding met passie voor seriematige woningbouw (>100 woningen).</p>
+        <h3>Taken:</h3>
+        <p>Je werkt zelfstandig aan de complete voorbereiding en planning van je eigen projecten. Je stuurt onderaannemers aan, controleert tekeningen en denkt de bouwlogistiek uit. Je bent van start tot uitvoering betrokken en bezoekt regelmatig de bouwplaats.</p>
+        <h3>Functie-eisen:</h3>
+        <ul>
+          <li>Bouwkundig inzicht en sterke communicatieve vaardigheden;</li>
+          <li>Ondernemende en accurate persoonlijkheid;</li>
+          <li>Schoolverlaters worden nadrukkelijk gevraagd te solliciteren.</li>
+          <li>Auto van de zaak is onderdeel van de voorwaarden.</li>
+        </ul>
+        <p>Stuur je CV naar dhr. Sjuul Stappers: <a href="mailto:sstappers@verwelius.nl">sstappers@verwelius.nl</a></p>
+      </div>
+
+      <div id="job6" class="job-content">
+        <h2>(Afstudeer)stages</h2>
+        <p>Wij bieden ambitieuze MBO en HBO Bouwkunde studenten meerdere stageplekken aan op ons hoofdkantoor in Huizen of op de bouwprojecten.</p>
+        <h3>Mogelijkheden op afdelingen:</h3>
+        <ul>
+          <li>Project Ontwikkeling</li>
+          <li>Kopersbegeleiding</li>
+          <li>Werkvoorbereiding</li>
+          <li>Uitvoering</li>
+          <li>Verhuur / Onderhoud & Beheer</li>
+        </ul>
+        <p>Na het afstuderen is het mogelijk om te beginnen in één van de vele startersfuncties binnen het bedrijf.</p>
+        <p>Geïnteresseerd? Stuur je CV naar: <a href="mailto:vacancies@verwelius.nl">vacancies@verwelius.nl</a></p>
+      </div>
+
       <img src="verwelius-logo-026-large copy.png" alt="Logo" class="card-logo">
     </div>
 
-    <div class="jobs-container">
-      <a href="javascript:void(0)" class="job-button" data-key="job1">Gebiedsontwikkelaar</a>
-      <a href="javascript:void(0)" class="job-button" data-key="job2">Commercieel en Technisch Beheerder Vastgoed</a>
-      <a href="javascript:void(0)" class="job-button" data-key="job3">Uitvoerders Woningbouw</a>
-      <a href="javascript:void(0)" class="job-button" data-key="job4">Binnendienst Medewerker Onderhoud en Beheer</a>
-      <a href="javascript:void(0)" class="job-button" data-key="job5">Junior/Medior/Senior Werkvoorbereider</a>
-      <a href="javascript:void(0)" class="job-button" data-key="job6">(Afstudeer) Stages</a>
+    <div class="jobs-container" id="side-menu">
+      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job1')">Gebiedsontwikkelaar</a>
+      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job2')">Commercieel en Technisch Beheerder Vastgoed</a>
+      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job3')">Uitvoerders Woningbouw</a>
+      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job4')">Binnendienst Medewerker Onderhoud en Beheer</a>
+      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job5')">Junior/Medior/Senior Werkvoorbereider</a>
+      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job6')">(Afstudeer) Stages</a>
+      
+      <a href="javascript:void(0)" id="back-btn-ui" class="back-btn" onclick="goHome()">Terug naar overzicht</a>
     </div>
   </main>
 </div>
@@ -259,35 +392,31 @@ p { margin: 0 0 15px 0; color: #1a1a1a; font-size: clamp(0.9rem, 1vw, 1rem); }
 <footer class="footer-reveal" id="footer">
   <div class="footer-columns">
     <div class="column">
-      <div class="column-title" data-key="nav_title">website navigatie</div>
+      <div class="column-title">website navigatie</div>
       <a href="javascript:void(0)">home •</a>
-      <a href="javascript:void(0)" data-key="nav_about">over Verwelius</a>
-      <a href="javascript:void(0)" data-key="nav_strength">onze kracht</a>
-      <a href="javascript:void(0)" data-key="nav_sales">aan- en verkoop</a>
+      <a href="javascript:void(0)">over Verwelius</a>
+      <a href="javascript:void(0)">onze kracht</a>
+      <a href="javascript:void(0)">aan- en verkoop</a>
       <a href="javascript:void(0)">contact</a>
     </div>
-
     <div class="column">
-      <div class="column-title" data-key="lang_title">taalkeuze</div>
-      <a href="javascript:void(0)" onclick="changeLanguage('nl')">Nederlands •</a>
-      <a href="javascript:void(0)" onclick="changeLanguage('en')">English</a>
-      <a href="javascript:void(0)" onclick="changeLanguage('es')">Español</a>
-      
+      <div class="column-title">taalkeuze</div>
+      <a href="javascript:void(0)">Nederlands •</a>
+      <a href="javascript:void(0)">English</a>
+      <a href="javascript:void(0)">Español</a>
       <div class="sub-section">
-        <div class="column-title" data-key="other_title">overig</div>
-        <a href="javascript:void(0)" data-key="cookie_info">cookie informatie</a>
-        <a href="javascript:void(0)" data-key="privacy">privacyverklaring</a>
+        <div class="column-title">overig</div>
+        <a href="javascript:void(0)">cookie informatie</a>
+        <a href="javascript:void(0)">privacyverklaring</a>
         <a href="javascript:void(0)">disclaimer</a>
         <a href="javascript:void(0)">colofon</a>
       </div>
     </div>
-
     <div class="column">
       <div class="column-title">corporate websites</div>
-      <a href="javascript:void(0)" data-key="corp_main">algemene website</a>
-      <a href="javascript:void(0)" data-key="corp_rent">huurportaal</a>
-      <a href="javascript:void(0)" data-key="corp_jobs">werken bij Verwelius</a>
-      
+      <a href="javascript:void(0)">algemene website</a>
+      <a href="javascript:void(0)">huurportaal</a>
+      <a href="javascript:void(0)">werken bij Verwelius</a>
       <div class="sub-section">
         <div class="column-title">project websites</div>
         <a href="javascript:void(0)">aan de Braassem</a>
@@ -300,129 +429,45 @@ p { margin: 0 0 15px 0; color: #1a1a1a; font-size: clamp(0.9rem, 1vw, 1rem); }
       </div>
     </div>
   </div>
-
   <div class="footer-info">
-    © 2026 Verwelius Holding B.V. &nbsp;•&nbsp; Postbus 323, 1270 AH Huizen &nbsp;•&nbsp; Energieweg 2, 1271 ED Huizen &nbsp;•&nbsp; T 035 - 528 40 00
+    <span>© 2026 Verwelius Holding B.V. &nbsp;•&nbsp; Postbus 323, 1270 AH Huizen &nbsp;•&nbsp; Energieweg 2, 1271 ED Huizen &nbsp;•&nbsp; T 035 - 528 40 00 &nbsp;•&nbsp; verwelius@verwelius.nl</span>
+    <img src="verwelius-logo-031-large copy.png" alt="Verwelius" class="footer-logo-bottom">
   </div>
-  <img src="verwelius-logo-031-large copy.png" alt="Logo" class="footer-image">
 </footer>
 
 <script>
-  const translations = {
-    nl: {
-      title: "Werken bij Verwelius",
-      intro1: "Bij Verwelius werk je in projectontwikkeling, bouw of vastgoedbeheer. Je komt terecht bij een daadkrachtig en financieel gezond familiebedrijf, met uitdagende projecten in woningbouw en commercieel vastgoed.",
-      intro2: "Met een prettige werksfeer en een platte organisatie werken we samen aan kwaliteit en resultaat.",
-      vacancies_title: "Vacatures",
-      vacancies_text: "Je kunt bij Verwelius instromen in diverse functies. Of je nu ervaren bent of net begint, er zijn volop mogelijkheden om te groeien.",
-      terms_title: "Arbeidsvoorwaarden",
-      terms_text: "Wij bieden uitstekende, moderne arbeidsvoorwaarden, met onder meer personeelsregelingen zoals bedrijfsfitness.",
-      job1: "Gebiedsontwikkelaar",
-      job2: "Commercieel en Technisch Beheerder Vastgoed",
-      job3: "Uitvoerders Woningbouw",
-      job4: "Binnendienst Medewerker Onderhoud en Beheer",
-      job5: "Junior/Medior/Senior Werkvoorbereider",
-      job6: "(Afstudeer) Stages",
-      nav_title: "website navigatie",
-      nav_about: "over Verwelius",
-      nav_strength: "onze kracht",
-      nav_sales: "aan- en verkoop",
-      lang_title: "taalkeuze",
-      other_title: "overig",
-      cookie_info: "cookie informatie",
-      privacy: "privacyverklaring",
-      corp_main: "algemene website",
-      corp_rent: "huurportaal",
-      corp_jobs: "werken bij Verwelius"
-    },
-    en: {
-      title: "Working at Verwelius",
-      intro1: "At Verwelius you work in project development, construction or property management. You will join a decisive and financially healthy family business, with challenging projects in residential and commercial real estate.",
-      intro2: "With a pleasant working atmosphere and a flat organization, we work together for quality and results.",
-      vacancies_title: "Vacancies",
-      vacancies_text: "You can join Verwelius in various positions. Whether you are experienced or just starting out, there are plenty of opportunities to grow.",
-      terms_title: "Terms of Employment",
-      terms_text: "We offer excellent, modern employment conditions, including staff schemes such as company fitness.",
-      job1: "Area Developer",
-      job2: "Commercial and Technical Real Estate Manager",
-      job3: "Construction Supervisors",
-      job4: "Internal Maintenance and Management Employee",
-      job5: "Junior/Medior/Senior Work Preparer",
-      job6: "(Graduation) Internships",
-      nav_title: "website navigation",
-      nav_about: "about Verwelius",
-      nav_strength: "our strength",
-      nav_sales: "purchase and sales",
-      lang_title: "language selection",
-      other_title: "other",
-      cookie_info: "cookie information",
-      privacy: "privacy statement",
-      corp_main: "main website",
-      corp_rent: "rental portal",
-      corp_jobs: "working at Verwelius"
-    },
-    es: {
-      title: "Trabajar en Verwelius",
-      intro1: "En Verwelius trabajas en desarrollo de proyectos, construcción o gestión inmobiliaria. Te unirás a una empresa familiar decidida y financieramente sana, con proyectos desafiantes en inmuebles residenciales y comerciales.",
-      intro2: "Con un ambiente de trabajo agradable y una organización horizontal, trabajamos juntos por la calidad y los resultados.",
-      vacancies_title: "Vacantes",
-      vacancies_text: "Puedes incorporarte a Verwelius en diversos puestos. Tanto si tienes experiencia como si acabas de empezar, hay muchas oportunidades para crecer.",
-      terms_title: "Condiciones de Trabajo",
-      terms_text: "Ofrecemos excelentes y modernas condiciones de empleo, incluyendo planes para el personal como gimnasio de empresa.",
-      job1: "Desarrollador de Áreas",
-      job2: "Gestor Inmobiliario Comercial y Técnico",
-      job3: "Supervisores de Construcción",
-      job4: "Empleado Interno de Mantenimiento y Gestión",
-      job5: "Preparador de Trabajo Junior/Medior/Senior",
-      job6: "Prácticas (de Graduación)",
-      nav_title: "navegación del sitio",
-      nav_about: "sobre Verwelius",
-      nav_strength: "nuestra fuerza",
-      nav_sales: "compra y venta",
-      lang_title: "selección de idioma",
-      other_title: "otros",
-      cookie_info: "información sobre cookies",
-      privacy: "declaración de privacidad",
-      corp_main: "sitio web general",
-      corp_rent: "portal de alquiler",
-      corp_jobs: "trabajar en Verwelius"
-    }
-  };
+function openJobPage(jobId) {
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => link.style.display = 'none');
+  document.getElementById('back-btn-ui').style.display = 'block';
 
-  function changeLanguage(lang) {
-    localStorage.setItem('verwelius-lang', lang);
-    applyLanguage(lang);
-  }
-
-  function applyLanguage(specificLang) {
-    const lang = specificLang || localStorage.getItem('verwelius-lang') || 'nl';
-    document.querySelectorAll('[data-key]').forEach(elem => {
-      const key = elem.getAttribute('data-key');
-      if (translations[lang] && translations[lang][key]) {
-        elem.textContent = translations[lang][key];
-      }
-    });
-    updateLayout();
-  }
-
-  function updateLayout() {
-    const footer = document.getElementById('footer');
-    if (window.innerWidth > 1024) {
-      const height = footer.offsetHeight;
-      document.documentElement.style.setProperty('--footer-real-height', height + 'px');
-    } else {
-      document.documentElement.style.setProperty('--footer-real-height', '0px');
-    }
-  }
-
-  window.addEventListener('load', () => {
-    applyLanguage();
-    updateLayout();
-  });
+  document.getElementById('main-text').style.display = 'none';
+  const contents = document.querySelectorAll('.job-content');
+  contents.forEach(c => c.style.display = 'none');
   
-  window.addEventListener('resize', updateLayout);
-  const observer = new ResizeObserver(updateLayout);
-  observer.observe(document.getElementById('footer'));
+  const activeJob = document.getElementById(jobId);
+  activeJob.style.display = 'flex';
+  activeJob.scrollTop = 0;
+  
+  document.body.style.overflow = 'hidden';
+  document.getElementById('footer').style.display = 'none';
+  document.getElementById('wrapper').style.marginBottom = '0';
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => link.style.display = 'block');
+  document.getElementById('back-btn-ui').style.display = 'none';
+
+  document.getElementById('main-text').style.display = 'block';
+  const contents = document.querySelectorAll('.job-content');
+  contents.forEach(c => c.style.display = 'none');
+  
+  document.body.style.overflow = 'auto';
+  document.getElementById('footer').style.display = 'flex';
+  document.getElementById('wrapper').style.marginBottom = 'var(--footer-real-height)';
+}
 </script>
 
 </body>
