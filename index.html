@@ -11,14 +11,88 @@
   --header-height: clamp(60px, 10vh, 100px);
   --logo-scale: clamp(40px, 6vh, 65px);
   --footer-real-height: 680px;
+
+  /* ============================================================
+     KLEUREN — pas hier aan om de hele pagina te wijzigen
+  ============================================================ */
+
+  /* Algemeen */
+  --kleur-zwart:              #000000;   /* Achtergrond body, footer, knoppen */
+  --kleur-wit:                #ffffff;   /* Tekst op donkere achtergrond, hover knoppen */
+  --kleur-tekst-donker:       #1a1a1a;   /* Alinea- en lijsttekst */
+  --kleur-tekst-grijs:        #444444;   /* Labels in admin */
+
+  /* Header */
+  --kleur-header-achtergrond: rgba(255,255,255,0.75); /* Transparante witte header */
+  --kleur-header-rand:        rgba(0,0,0,0.05);       /* Subtiele onderkant header */
+
+  /* Content kaart (linker vlak) */
+  --kleur-kaart-achtergrond:  rgba(220,220,220,0.92); /* Grijze content-kaart */
+  --kleur-scrollbar:          rgba(0,0,0,0.1);        /* Scrollbar kleur */
+
+  /* Vacature knoppen (rechts) */
+  --kleur-knop-achtergrond:   rgba(28,28,28,0.85);   /* Donkere vacatureknop */
+  --kleur-knop-rand:          rgba(255,255,255,0.1);  /* Subtiele rand knop */
+  --kleur-knop-hover:         #ffffff;                /* Knop hover achtergrond */
+  --kleur-knop-hover-tekst:   #000000;                /* Knop hover tekst */
+
+  /* Navigatiemenu */
+  --kleur-nav-achtergrond:    #ffffff;   /* Uitklapbaar nav menu */
+  --kleur-nav-tekst:          #000000;   /* Nav menu tekst */
+  --kleur-nav-rand:           #e0e0e0;   /* Lijnen in nav menu */
+
+  /* Footer */
+  --kleur-footer-achtergrond: #000000;   /* Footer achtergrond */
+  --kleur-footer-tekst:       #ffffff;   /* Footer tekst */
+  --kleur-footer-rand:        #333333;   /* Footer scheidingslijn */
+
+  /* Admin paneel */
+  --kleur-admin-groen:        #2c7a2c;   /* Opslaan/bevestig knoppen */
+  --kleur-admin-groen-hover:  #235f23;   /* Hover opslaan knop */
+  --kleur-admin-grijs:        #888888;   /* Annuleer knoppen */
+  --kleur-admin-grijs-hover:  #666666;   /* Hover annuleer knop */
+  --kleur-admin-rood:         #c0392b;   /* Verwijder knoppen */
+  --kleur-admin-kaart-rand:   #444444;   /* Linkerbalk vraag-kaarten */
+  --kleur-admin-bewerken:     #2c7a2c;   /* Linkerbalk bij bewerken */
+  --kleur-admin-achtergrond:  #f4f4f4;   /* Admin overlay achtergrond */
+  --kleur-admin-hover:        #f7f7f7;   /* Hover rij in admin */
+  --kleur-admin-body:         #fafafa;   /* Uitklapbare body kaarten */
+
+  /* Badges */
+  --kleur-badge-verplicht-bg: #f8d7da;   /* Verplicht badge achtergrond */
+  --kleur-badge-verplicht:    #721c24;   /* Verplicht badge tekst */
+  --kleur-badge-optioneel-bg: #e2e3e5;   /* Optioneel badge achtergrond */
+  --kleur-badge-optioneel:    #383d41;   /* Optioneel badge tekst */
+
+  /* Status badges (online / offline) */
+  --kleur-online-bg:          #d4edda;   /* Online badge achtergrond */
+  --kleur-online-tekst:       #1a5e2a;   /* Online badge tekst */
+  --kleur-offline-bg:         #f8d7da;   /* Offline badge achtergrond */
+  --kleur-offline-tekst:      #721c24;   /* Offline badge tekst */
 }
 
+.admin-edit-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease-out, padding 0.35s ease;
+  background: #f9f9f9;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 15px;
+}
+.admin-edit-panel.is-open {
+  max-height: 1000px;
+  padding: 20px 15px;
+  border-top: 1px solid #eee;
+}
+
+.job-button.btn-active { background: #000 !important; color: var(--kleur-wit); }
+
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   font-family: "Montserrat", Arial, sans-serif;
   line-height: 1.4;
-  background-color: #000;
+  background-color: var(--kleur-zwart);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -33,79 +107,132 @@ body {
   background-attachment: fixed;
   z-index: 2;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  margin-bottom: var(--footer-real-height);
+  margin-bottom: 0;
 }
 
 .header {
-  position: fixed;
-  top: 0;
-  width: 100%;
+  position: fixed; top: 0; width: 100%;
   height: var(--header-height);
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--kleur-header-achtergrond);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid var(--kleur-header-rand);
   z-index: 1000;
 }
 
-.arrow-container {
-  position: absolute;
-  left: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  transition: opacity 0.3s;
+.menu-btn {
+  position: absolute; left: 5%; top: 50%; transform: translateY(-50%);
+  cursor: pointer; background: none; border: none; padding: 10px;
+  display: flex; align-items: center; gap: 10px;
+  transition: opacity 0.3s; z-index: 1001;
+}
+.menu-btn:hover { opacity: 1; }
+.menu-btn-label {
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 13px; font-weight: 300; letter-spacing: 0.15em;
+  color: #000; opacity: 0; max-width: 0;
+  overflow: hidden; white-space: nowrap;
+  transition: opacity 0.3s ease, max-width 0.3s ease;
+}
+.menu-btn:hover .menu-btn-label {
+  opacity: 1; max-width: 80px;
+}
+.menu-chevron {
+  display: block; overflow: visible; flex-shrink: 0;
 }
 
-.arrow-container:hover { opacity: 0.5; }
+.admin-trigger { display: none !important; }
 
-.chevron-down {
-  width: 12px;
-  height: 12px;
-  border-right: 2px solid #000;
-  border-bottom: 2px solid #000;
-  transform: rotate(45deg);
-  margin-top: -5px;
+.nav-menu {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 5000; pointer-events: none; visibility: hidden;
+}
+.nav-menu.open { pointer-events: all; visibility: visible; }
+.nav-menu-panel {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: #fff; color: var(--kleur-zwart);
+  transform: translateY(-100%);
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto; display: flex; flex-direction: column; box-sizing: border-box;
+}
+.nav-menu.open .nav-menu-panel { transform: translateY(0); }
+.nav-menu-topbar {
+  display: flex; align-items: center;
+  height: var(--header-height); padding: 0 5%;
+  flex-shrink: 0; border-bottom: 1px solid var(--kleur-nav-rand); position: relative;
+}
+.nav-menu-sluit-btn {
+  background: none; border: none; cursor: pointer; padding: 10px;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.3s; position: absolute; left: 5%; top: 50%; transform: translateY(-50%);
+}
+.nav-menu-sluit-btn:hover { opacity: 0.45; }
+.nav-chevron-up {
+  width: 11px; height: 11px;
+  border-right: 1.5px solid #000; border-bottom: 1.5px solid #000;
+  transform: rotate(-135deg); margin-top: 4px;
+}
+.nav-menu-logo { height: var(--logo-scale); width: auto; object-fit: contain; margin: 0 auto; }
+.nav-menu-body {
+  padding: 60px 5%; display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 0 40px; max-width: 1100px; width: 100%; margin: 0 auto; box-sizing: border-box;
+}
+.nav-section-title { font-size: 13px; font-weight: 400; color: var(--kleur-zwart); margin-bottom: 18px; letter-spacing: 0; }
+.nav-main-links { display: flex; flex-direction: column; }
+.nav-main-links a {
+  color: var(--kleur-zwart); text-decoration: none; font-size: clamp(22px, 3vw, 32px);
+  font-weight: 300; padding: 10px 0; border-bottom: 1px solid var(--kleur-nav-rand);
+  transition: opacity 0.2s; display: flex; align-items: center; justify-content: space-between;
+}
+.nav-main-links a:hover { opacity: 0.45; }
+.nav-main-links a.actief::after { content: '·'; font-size: 1.4em; line-height: 1; }
+.nav-section-links { display: flex; flex-direction: column; }
+.nav-section-links a {
+  color: var(--kleur-zwart); text-decoration: none; font-size: 15px; font-weight: 300;
+  padding: 9px 0; border-bottom: 1px solid var(--kleur-nav-rand); transition: opacity 0.2s;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-section-links a:hover { opacity: 0.45; }
+.nav-section-links a.actief::after { content: '·'; }
+.nav-taal-links { display: flex; flex-direction: column; }
+.nav-taal-links a {
+  color: var(--kleur-zwart); text-decoration: none; font-size: 15px; font-weight: 300;
+  padding: 9px 0; border-bottom: 1px solid var(--kleur-nav-rand); transition: opacity 0.2s;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-taal-links a:hover { opacity: 0.45; }
+.nav-taal-links a.actief::after { content: '·'; }
+.nav-col-right { display: flex; flex-direction: column; gap: 40px; }
+.nav-login-link {
+  color: var(--kleur-zwart); text-decoration: none; font-size: clamp(22px, 3vw, 32px);
+  font-weight: 300; padding: 10px 0; border-bottom: 1px solid var(--kleur-nav-rand);
+  transition: opacity 0.2s; display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; background: none; border-top: none; border-left: none; border-right: none;
+  font-family: "Montserrat", Arial, sans-serif; width: 100%; text-align: left;
+}
+.nav-login-link:hover { opacity: 0.45; }
+
+@media (max-width: 768px) {
+  .nav-menu-body { grid-template-columns: 1fr; padding: 30px 5%; gap: 30px 0; }
 }
 
-.logo-header {
-  height: var(--logo-scale);
-  width: auto;
-  object-fit: contain;
-}
+.logo-header { height: var(--logo-scale); width: auto; object-fit: contain; }
 
 .main-content {
   padding-top: calc(var(--header-height) + 40px);
   padding-bottom: 80px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
+  display: flex; flex-direction: row; justify-content: center; align-items: flex-start;
   gap: clamp(20px, 4vw, 50px);
-  max-width: 1300px;
-  margin: 0 auto;
-  padding-left: 5%;
-  padding-right: 5%;
-  box-sizing: border-box;
+  max-width: 1300px; margin: 0 auto;
+  padding-left: 5%; padding-right: 5%; box-sizing: border-box;
 }
 
 .content-card {
-  background: rgba(220, 220, 220, 0.92);
-  flex: 1 1 500px;
-  max-width: 600px;
+  background: var(--kleur-kaart-achtergrond);
+  flex: 1 1 500px; max-width: 600px;
   padding: clamp(20px, 5%, 40px);
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
+  border-radius: 5px; display: flex; flex-direction: column;
 }
 
 #main-text, .job-content {
@@ -114,137 +241,434 @@ body {
   padding-right: 15px;
 }
 
+#main-text::-webkit-scrollbar, .job-content::-webkit-scrollbar { width: 4px; }
+#main-text::-webkit-scrollbar-thumb, .job-content::-webkit-scrollbar-thumb {
+  background: var(--kleur-scrollbar); border-radius: 10px;
+}
+
 .job-content { display: none; flex-direction: column; }
 
-#main-text::-webkit-scrollbar, .job-content::-webkit-scrollbar {
-  width: 4px;
-}
-#main-text::-webkit-scrollbar-thumb, .job-content::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.1);
-  border-radius: 10px;
+.jobs-container {
+  flex: 0 0 350px; width: 350px; display: flex; flex-direction: column; gap: 12px;
+  position: sticky;
+  top: calc(var(--header-height) + 40px);
+  align-self: flex-start;
 }
 
-.jobs-container {
-  flex: 1 1 350px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+#dynamic-job-buttons {
+  display: flex; flex-direction: column; gap: 12px; width: 100%;
 }
 
 .job-button, .back-btn {
-  background: rgba(28, 28, 28, 0.85);
-  color: #fff;
-  text-decoration: none;
-  padding: 18px 25px;
-  border-radius: 4px;
-  font-size: clamp(14px, 1.1vw, 15px);
-  border: 1px solid rgba(255,255,255,0.1);
-  backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
-  text-align: left;
-  display: block;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  cursor: pointer;
-  box-sizing: border-box;
+  background: var(--kleur-knop-achtergrond); color: var(--kleur-wit); text-decoration: none;
+  padding: 18px 25px; border-radius: 4px; font-size: clamp(14px, 1.1vw, 15px);
+  border: 1px solid var(--kleur-knop-rand); backdrop-filter: blur(5px);
+  transition: all 0.3s ease; text-align: left; display: block;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;
+  box-sizing: border-box; font-family: "Montserrat", Arial, sans-serif;
 }
-
 .job-button:hover, .back-btn:hover {
-  background: #fff;
-  color: #000;
-  transform: translateX(10px);
+  background: #fff; color: var(--kleur-zwart); transform: translateX(10px);
   box-shadow: 0 6px 20px rgba(0,0,0,0.4);
 }
+.back-btn { display: none; }
 
-.back-btn {
-  display: none;
-}
-
-h2 { margin: 0 0 15px 0; font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 700; color: #000; }
-h3 { margin: 25px 0 10px 0; font-size: clamp(1.1rem, 2vw, 1.3rem); font-weight: 700; color: #000; }
-p { margin: 0 0 15px 0; color: #1a1a1a; font-size: clamp(0.9rem, 1vw, 1rem); }
-ul { margin: 0 0 20px 0; padding-left: 20px; color: #1a1a1a; font-size: clamp(0.9rem, 1vw, 1rem); }
+h2 { margin: 0 0 15px 0; font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 700; color: var(--kleur-zwart); }
+h3 { margin: 25px 0 10px 0; font-size: clamp(1.1rem, 2vw, 1.3rem); font-weight: 700; color: var(--kleur-zwart); }
+p { margin: 0 0 15px 0; color: var(--kleur-tekst-donker); font-size: clamp(0.9rem, 1vw, 1rem); }
+ul { margin: 0 0 20px 0; padding-left: 20px; color: var(--kleur-tekst-donker); font-size: clamp(0.9rem, 1vw, 1rem); }
 li { margin-bottom: 8px; }
 
-.card-logo {
-  margin-top: 25px;
-  height: 45px;
-  width: auto;
-  align-self: flex-start;
-  object-fit: contain;
+.card-logo { margin-top: 25px; height: 45px; width: auto; align-self: flex-start; object-fit: contain; }
+
+/* ===== TOGGLE SWITCH ===== */
+.toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc; border-radius: 24px; transition: .3s;
+}
+.toggle-slider:before {
+  position: absolute; content: "";
+  height: 18px; width: 18px; left: 3px; bottom: 3px;
+  background-color: white; border-radius: 50%; transition: .3s;
+}
+.toggle-switch input:checked + .toggle-slider { background-color: var(--kleur-admin-groen); }
+.toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+/* ===== RICH TEXT EDITOR ===== */
+.editor-wrap {
+  border: 1px solid #c7c7c7; border-radius: 4px; background: #fff;
+  margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.editor-toolbar {
+  display: flex; flex-wrap: wrap; gap: 1px; padding: 4px 6px;
+  background: #f8f9fa; border-bottom: 1px solid var(--kleur-nav-rand); align-items: center;
+}
+.editor-toolbar button {
+  background: transparent; border: none; border-radius: 4px; cursor: pointer;
+  padding: 5px 7px; font-size: 13px; font-family: Arial, sans-serif; color: #3c4043;
+  line-height: 1; transition: background 0.1s; display: flex; align-items: center;
+  justify-content: center; min-width: 28px; height: 28px;
+}
+.editor-toolbar button:hover { background: #e8eaed; }
+.editor-toolbar button:active { background: #d2e3fc; color: #1a73e8; }
+.editor-toolbar select {
+  border: 1px solid transparent; border-radius: 4px; padding: 3px 4px;
+  font-size: 12px; font-family: Arial, sans-serif; background: transparent;
+  cursor: pointer; height: 28px; color: #3c4043; transition: background 0.1s, border-color 0.1s;
+}
+.editor-toolbar select:hover { background: #e8eaed; border-color: #e8eaed; }
+.editor-toolbar .sep { width: 1px; height: 18px; background: #dadce0; margin: 0 3px; flex-shrink: 0; }
+.editor-toolbar input[type="color"] {
+  width: 28px; height: 28px; border: none; border-radius: 4px; padding: 2px;
+  cursor: pointer; background: transparent; transition: background 0.1s;
+}
+.editor-toolbar input[type="color"]:hover { background: #e8eaed; }
+.editor-toolbar .color-btn-wrap {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 4px; padding: 3px 5px; cursor: pointer; height: 28px;
+  transition: background 0.1s; position: relative;
+}
+.editor-toolbar .color-btn-wrap:hover { background: #e8eaed; }
+.editor-toolbar .color-btn-wrap input[type="color"] {
+  position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; top: 0; left: 0; padding: 0;
+}
+.color-indicator { font-size: 12px; font-weight: 700; line-height: 1; color: #3c4043; font-family: Arial, sans-serif; }
+.color-bar { width: 16px; height: 3px; border-radius: 1px; margin-top: 2px; }
+.editor-body {
+  min-height: 140px; max-height: 300px; overflow-y: auto;
+  padding: 12px 14px; outline: none; font-family: "Montserrat", Arial, sans-serif;
+  font-size: 15px; line-height: 1.6; color: var(--kleur-tekst-donker);
+}
+.editor-body:empty:before { content: attr(data-placeholder); color: #aaa; pointer-events: none; }
+
+/* ===== ACCORDION SOLLICITATIES ===== */
+.soll-card {
+  background: #fff; border: 1px solid #ddd; border-left: 4px solid #000;
+  border-radius: 4px; margin-bottom: 8px; overflow: hidden; word-break: break-word; overflow-wrap: break-word;
+}
+.soll-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px; cursor: pointer; gap: 10px; user-select: none; transition: background 0.15s;
+}
+.soll-card-header:hover { background: var(--kleur-admin-hover); }
+.soll-card-header-left { flex: 1; min-width: 0; }
+.soll-card-title { font-weight: 700; font-size: 14px; color: var(--kleur-zwart); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.soll-card-preview { font-size: 12px; color: #666; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.soll-card-meta { font-size: 11px; color: #999; white-space: nowrap; flex-shrink: 0; }
+.soll-expand-btn { background: none; border: none; cursor: pointer; padding: 4px; color: #666; font-size: 16px; line-height: 1; flex-shrink: 0; transition: transform 0.25s; }
+.soll-expand-btn.open { transform: rotate(180deg); }
+.soll-card-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: var(--kleur-admin-body); border-top: 1px solid transparent; }
+.soll-card-body.open { max-height: 600px; border-top-color: #eee; }
+.soll-card-body-inner { padding: 14px; }
+.soll-field { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; align-items: baseline; }
+.soll-field strong { color: #333; white-space: nowrap; min-width: 100px; flex-shrink: 0; }
+.soll-field span { color: var(--kleur-tekst-donker); word-break: break-word; }
+
+/* ===== VRAAG BEWERKEN KAART ===== */
+.vraag-edit-card {
+  background: #fff; border: 1px solid #ddd; border-left: 4px solid var(--kleur-admin-kaart-rand);
+  border-radius: 4px; margin-bottom: 8px; overflow: hidden;
+}
+.vraag-edit-card.is-editing { border-left-color: var(--kleur-admin-bewerken); }
+.vraag-edit-header {
+  display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+  cursor: pointer; user-select: none; transition: background 0.15s;
+}
+.vraag-edit-header:hover { background: var(--kleur-admin-hover); }
+.vraag-edit-title { flex: 1; font-weight: 700; font-size: 14px; color: var(--kleur-zwart); }
+.vraag-edit-sub { font-size: 11px; color: #888; margin-top: 2px; font-weight: 400; }
+.vraag-edit-badge {
+  font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px;
+  text-transform: uppercase; letter-spacing: 0.3px; flex-shrink: 0;
+}
+.badge-verplicht { background: var(--kleur-badge-verplicht-bg); color: var(--kleur-badge-verplicht); }
+.badge-optioneel { background: var(--kleur-badge-optioneel-bg); color: var(--kleur-badge-optioneel); }
+.vraag-edit-body { display: none; padding: 16px 14px; background: var(--kleur-admin-body); border-top: 1px solid #eee; }
+.vraag-edit-body.open { display: block; }
+.vraag-edit-body label { display: block; font-size: 12px; font-weight: 700; color: #444; margin-bottom: 4px; margin-top: 10px; }
+.vraag-edit-body label:first-child { margin-top: 0; }
+.vraag-edit-body input[type="text"] {
+  width: 100%; padding: 9px 11px; border: 1px solid #ccc; border-radius: 4px;
+  font-family: "Montserrat", Arial, sans-serif; font-size: 13px; box-sizing: border-box;
+  background: #fff; transition: border-color 0.2s;
+}
+.vraag-edit-body input[type="text"]:focus { outline: none; border-color: #555; }
+.vraag-edit-acties { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; align-items: center; }
+.btn-opslaan { background: var(--kleur-admin-groen); color: var(--kleur-wit); border: none; padding: 8px 16px; border-radius: 4px; font-family: "Montserrat", Arial, sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.btn-opslaan:hover { background: var(--kleur-admin-groen-hover); }
+.btn-annuleer { background: var(--kleur-admin-grijs); color: var(--kleur-wit); border: none; padding: 8px 14px; border-radius: 4px; font-family: "Montserrat", Arial, sans-serif; font-size: 13px; cursor: pointer; transition: background 0.2s; }
+.btn-annuleer:hover { background: var(--kleur-admin-grijs-hover); }
+
+/* ===== INLINE VAKATURES BEWERKEN (FOLD-OUT) ===== */
+.inline-vac-edit {
+  background: #fff; border: 1px solid #ddd; border-radius: 4px;
+  margin-bottom: 8px; overflow: hidden;
+}
+.inline-vac-edit-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; cursor: pointer; user-select: none; transition: background 0.15s;
+  gap: 10px;
+}
+.inline-vac-edit-header:hover { background: var(--kleur-admin-hover); }
+.inline-vac-edit-body {
+  display: none; padding: 18px; border-top: 1px solid #eee; background: var(--kleur-admin-body);
+}
+.inline-vac-edit-body.open { display: block; }
+
+/* ===== MEERKEUZE OPTIES ===== */
+.meerkeuze-optie {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+}
+.meerkeuze-optie input[type="text"] {
+  flex: 1; padding: 7px 10px; border: 1px solid #ccc; border-radius: 3px;
+  font-family: "Montserrat", Arial, sans-serif; font-size: 13px; box-sizing: border-box;
+}
+.btn-optie-verwijder {
+  background: var(--kleur-admin-rood); color: var(--kleur-wit); border: none; width: 24px; height: 24px;
+  border-radius: 3px; cursor: pointer; font-size: 14px; line-height: 1;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.btn-optie-add {
+  background: var(--kleur-admin-kaart-rand); color: var(--kleur-wit); border: none; padding: 5px 12px; border-radius: 3px;
+  font-family: "Montserrat", Arial, sans-serif; font-size: 12px; cursor: pointer;
+  margin-top: 4px;
 }
 
+/* ===== FOOTER ===== */
 .footer-reveal {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  min-height: var(--footer-real-height);
-  background-color: #000;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  padding: 60px 0 0 0;
-  box-sizing: border-box;
+  position: relative; bottom: auto; left: auto; width: 100%;
+  min-height: var(--footer-real-height); background-color: var(--kleur-zwart); color: var(--kleur-wit);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 1; padding: 60px 0 0 0; box-sizing: border-box;
 }
-
 .footer-columns {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  width: 90%;
-  max-width: 1100px;
-  align-items: start;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+  width: 90%; max-width: 1100px; align-items: start;
 }
-
-.column-title { color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 18px; letter-spacing: 0.5px; }
-.column a { color: #fff; text-decoration: none; font-size: 15px; margin-bottom: 10px; display: block; font-weight: 300; transition: opacity 0.2s; }
+.column-title { color: var(--kleur-wit); font-weight: 700; font-size: 14px; margin-bottom: 18px; letter-spacing: 0.5px; }
+.column a { color: var(--kleur-wit); text-decoration: none; font-size: 15px; margin-bottom: 10px; display: block; font-weight: 300; transition: opacity 0.2s; }
 .column a:hover { opacity: 0.7; }
 .sub-section { margin-top: 40px; }
-
 .footer-info {
-  border-top: 1px solid #333;
-  margin-top: 50px;
-  padding-top: 25px;
-  padding-bottom: 80px;
-  font-size: 13px;
-  width: 90%;
-  max-width: 1100px;
-  text-align: center;
-  font-weight: 300;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
+  border-top: 1px solid var(--kleur-footer-rand); margin-top: 50px; padding-top: 25px; padding-bottom: 80px;
+  font-size: 13px; width: 90%; max-width: 1100px; text-align: center; font-weight: 300; color: var(--kleur-wit);
+  display: flex; flex-direction: column; align-items: center; gap: 30px;
 }
-
 .footer-logo-bottom { height: 45px; width: auto; object-fit: contain; }
+
+/* ===== ADMIN OVERLAY ===== */
+.overlay {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.75); z-index: 9999; justify-content: center;
+  align-items: flex-start; padding-top: 60px; box-sizing: border-box; overflow-y: auto;
+}
+.overlay.open { display: flex; }
+.overlay-content {
+  background: var(--kleur-admin-achtergrond); width: 90%; max-width: 800px; border-radius: 8px;
+  padding: 40px; box-sizing: border-box; position: relative; margin-bottom: 60px;
+}
+.admin-tabs {
+  display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd;
+  padding-bottom: 0; flex-wrap: wrap;
+}
+.tab-btn {
+  background: none; border: none; padding: 10px 20px;
+  font-family: "Montserrat", Arial, sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; color: #666; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+}
+.tab-btn.active { color: var(--kleur-zwart); border-bottom-color: var(--kleur-zwart); }
+.tab-btn:hover { color: var(--kleur-zwart); }
+.admin-section { display: none; padding-top: 20px; }
+.admin-section.active { display: block; }
+.overlay-content h2 { color: var(--kleur-zwart); margin-bottom: 5px; }
+.overlay-content h3 { margin: 20px 0 12px 0; font-size: 1rem; color: var(--kleur-zwart); }
+.overlay-content input[type="text"], .overlay-content textarea {
+  width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px;
+  font-family: "Montserrat", Arial, sans-serif; font-size: 14px; box-sizing: border-box; background: #fff;
+}
+.overlay-content textarea { resize: vertical; }
+
+.admin-vacature-item {
+  background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 15px 18px;
+  margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px;
+}
+.admin-vacature-item span { font-weight: 700; font-size: 14px; color: var(--kleur-zwart); flex: 1; }
+
+.btn-delete {
+  background: var(--kleur-admin-rood); color: var(--kleur-wit); border: none; padding: 7px 14px; border-radius: 4px;
+  cursor: pointer; font-family: "Montserrat", Arial, sans-serif; font-size: 13px;
+  transition: background 0.2s; white-space: nowrap;
+}
+.btn-delete:hover { background: #96281b; }
+
+.solliciteer-btn {
+  display: inline-block; margin-top: 15px; padding: 12px 24px; background: #000; color: var(--kleur-wit);
+  border: none; border-radius: 4px; font-family: "Montserrat", Arial, sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s;
+}
+.solliciteer-btn:hover { background: #333; }
+
+/* ===== LOGIN OVERLAY ===== */
+.login-overlay {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8); z-index: 10001; justify-content: center; align-items: center;
+}
+.login-overlay.open { display: flex; }
+.login-box {
+  background: var(--kleur-admin-achtergrond); border-radius: 8px; padding: 40px; width: 100%;
+  max-width: 380px; box-sizing: border-box; position: relative; text-align: center;
+}
+.login-box h3 { margin: 0 0 8px 0; font-size: 1.2rem; color: var(--kleur-zwart); }
+.login-box p { font-size: 13px; color: #666; margin-bottom: 24px; }
+.login-box input {
+  width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px;
+  font-family: "Montserrat", Arial, sans-serif; font-size: 14px; box-sizing: border-box;
+}
+.login-box input:focus { outline: none; border-color: var(--kleur-zwart); }
+.login-fout { color: #c0392b; font-size: 13px; margin-bottom: 10px; min-height: 18px; display: block; }
+.login-sluit { position: absolute; top: 12px; right: 16px; font-size: 24px; background: none; border: none; cursor: pointer; color: var(--kleur-zwart); line-height: 1; }
+
+/* Online badge */
+.status-badge {
+  display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px;
+  border-radius: 3px; margin-left: 8px; vertical-align: middle; text-transform: uppercase; letter-spacing: 0.3px;
+}
+.status-online { background: var(--kleur-online-bg); color: var(--kleur-online-tekst); }
+.status-offline { background: var(--kleur-offline-bg); color: var(--kleur-offline-tekst); }
+.leeg-melding { color: #888; font-size: 14px; font-style: italic; }
+
+/* ===== BEVESTIG DIALOG ===== */
+.confirm-overlay {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6); z-index: 20000; justify-content: center; align-items: center;
+}
+.confirm-overlay.open { display: flex; }
+.confirm-box {
+  background: #fff; border-radius: 8px; padding: 32px; max-width: 380px; width: 90%;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3); text-align: center;
+}
+.confirm-box h4 { margin: 0 0 10px 0; font-size: 16px; color: var(--kleur-zwart); }
+.confirm-box p { margin: 0 0 24px 0; font-size: 14px; color: #555; line-height: 1.5; }
+.confirm-btns { display: flex; gap: 10px; justify-content: center; }
+.confirm-btn-ja { background: var(--kleur-admin-rood); color: var(--kleur-wit); border: none; padding: 10px 24px; border-radius: 4px; font-family: "Montserrat", Arial, sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; }
+.confirm-btn-ja:hover { background: #96281b; }
+.confirm-btn-nee { background: #888; color: var(--kleur-wit); border: none; padding: 10px 20px; border-radius: 4px; font-family: "Montserrat", Arial, sans-serif; font-size: 14px; cursor: pointer; }
+.confirm-btn-nee:hover { background: #666; }
+
+/* Upload veld type badge */
+.type-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px;
+  text-transform: uppercase; letter-spacing: 0.3px; margin-left: 6px; flex-shrink: 0;
+}
+.type-tekst { background: #e3f2fd; color: #1565c0; }
+.type-meerkeuze { background: #e8f5e9; color: #1b5e20; }
+.type-upload { background: #fff3e0; color: #e65100; }
 
 @media (max-width: 1024px) {
   .main-content { flex-direction: column; align-items: center; }
   .content-card { width: 100%; max-width: 100%; }
-  .page-wrapper { margin-bottom: 0 !important; }
-  .footer-reveal { position: relative; height: auto; }
+  .jobs-container { position: static; width: 100%; max-width: 100%; }
   .footer-columns { grid-template-columns: 1fr; gap: 30px; text-align: center; }
 }
 </style>
 </head>
 <body>
 
+<!-- BEVESTIG DIALOG -->
+<div id="confirmOverlay" class="confirm-overlay">
+  <div class="confirm-box">
+    <h4 id="confirmTitle">Weet u het zeker?</h4>
+    <p id="confirmMsg">Deze actie kan niet ongedaan worden gemaakt.</p>
+    <div class="confirm-btns">
+      <button class="confirm-btn-nee" onclick="confirmAntwoord(false)">Annuleren</button>
+      <button class="confirm-btn-ja" onclick="confirmAntwoord(true)">Ja, verwijderen</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
 <header class="header">
-  <button id="nav-arrow" class="arrow-container" onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})">
-    <div class="chevron-down"></div>
+  <button class="menu-btn" id="menuBtn" onclick="openNavMenu()" title="Menu openen" aria-label="Menu">
+    <svg class="menu-chevron" id="menuChevronSvg" width="22" height="14" viewBox="0 0 22 14" fill="none">
+      <polyline id="menuChevronPoly" points="2,2 11,12 20,2" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <span class="menu-btn-label">menu</span>
   </button>
-  <img src="verwelius-logo-023-large copy.png" alt="Logo" class="logo-header">
+  <img src="verwelius-logo-023-large copy.png" alt="Verwelius" class="logo-header">
 </header>
 
+<!-- VERWELIUS FULLSCREEN MENU -->
+<nav class="nav-menu" id="navMenu">
+  <div class="nav-menu-panel">
+    <div class="nav-menu-topbar">
+      <button class="nav-menu-sluit-btn" onclick="closeNavMenu()" aria-label="Menu sluiten">
+        <div class="nav-chevron-up"></div>
+      </button>
+      <img src="verwelius-logo-023-large copy.png" alt="Verwelius" class="nav-menu-logo">
+    </div>
+    <div class="nav-menu-body">
+      <div>
+        <div class="nav-section-title">website navigatie</div>
+        <div class="nav-main-links">
+          <a href="https://www.verwelius.nl" target="_blank" class="actief">home</a>
+          <a href="https://www.verwelius.nl/over-verwelius" target="_blank">over Verwelius</a>
+          <a href="https://www.verwelius.nl/onze-kracht" target="_blank">onze kracht</a>
+          <a href="https://www.verwelius.nl/aan-en-verkoop" target="_blank">aan- en verkoop</a>
+          <a href="https://www.verwelius.nl/contact" target="_blank">contact</a>
+          <button class="nav-login-link" onclick="closeNavMenu(); openAdmin();">beheer inloggen</button>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:40px;">
+        <div>
+          <div class="nav-section-title">taalkeuze</div>
+          <div class="nav-taal-links">
+            <a href="javascript:void(0)" class="actief">Nederlands</a>
+            <a href="https://www.verwelius.nl/en/" target="_blank">English</a>
+            <a href="https://www.verwelius.nl/es/" target="_blank">Español</a>
+          </div>
+        </div>
+        <div>
+          <div class="nav-section-title">overig</div>
+          <div class="nav-section-links">
+            <a href="https://www.verwelius.nl/cookies" target="_blank">cookie informatie</a>
+            <a href="https://www.verwelius.nl/privacy" target="_blank">privacyverklaring</a>
+            <a href="https://www.verwelius.nl/disclaimer" target="_blank">disclaimer</a>
+            <a href="https://www.verwelius.nl/colofon" target="_blank">colofon</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-col-right">
+        <div>
+          <div class="nav-section-title">corporate websites</div>
+          <div class="nav-section-links">
+            <a href="https://www.verwelius.nl" target="_blank" class="actief">algemene website</a>
+            <a href="https://huurportaal.verwelius.nl" target="_blank">huurportaal</a>
+            <a href="https://werkenbijverwelius.nl/">werken bij Verwelius</a>
+          </div>
+        </div>
+        <div>
+          <div class="nav-section-title">project websites</div>
+          <div class="nav-section-links">
+            <a href="https://aandebraassem.nl" target="_blank">aan de Braassem</a>
+            <a href="https://de-industrieel.nl/nl/" target="_blank">de Industrieel</a>
+            <a href="https://aandegrift.nl" target="_blank">de Grift</a>
+            <a href="https://www.deverbindingzwammerdam.nl" target="_blank">de Verbinding Zwammerdam</a>
+            <a href="https://www.thuisinhuizen.nl" target="_blank">Thuis in Huizen</a>
+            <a href="https://rootslelystad.nl" target="_blank">Roots Lelystad</a>
+            <a href="https://debaarnschezoom.nl" target="_blank">De Baarnsche Zoom</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN PAGE -->
 <div class="page-wrapper" id="wrapper">
   <main class="main-content">
     <div class="content-card">
-      
       <div id="main-text">
         <h2>Werken bij Verwelius</h2>
         <p>Bij Verwelius werk je in projectontwikkeling, bouw of vastgoedbeheer. Je komt terecht bij een daadkrachtig en financieel gezond familiebedrijf, met uitdagende projecten in woningbouw en commercieel vastgoed.</p>
@@ -254,137 +678,14 @@ li { margin-bottom: 8px; }
         <h3>Arbeidsvoorwaarden</h3>
         <p>Wij bieden uitstekende, moderne arbeidsvoorwaarden, met onder meer personeelsregelingen zoals bedrijfsfitness.</p>
       </div>
-
-      <div id="job1" class="job-content">
-        <h2>Gebiedsontwikkelaar</h2>
-        <p>Als gebiedsontwikkelaar ben je de spil in het proces van initiatief tot en met realisatie. Dit doe je door betrokken leiderschap te tonen en coachend te werk te gaan. Door je financiële bewustheid ben je onderscheidend en stuur je het proces naar een goede prijs/kwaliteitverhouding. Je signaleert de kansen en elimineert de risico’s, werkt proactief en hebt een goede helicopterview, waarmee je de hoofdlijnen kunt bewaken en indien nodig ook op het detailniveau kunt bijsturen.</p>
-        <p>Bij Verwelius ben je actief binnen de ontwikkelafdeling. Je werkt bij een slagvaardig en financieel uiterst gezond familiebedrijf dat bekend staat als een daadkrachtige ontwikkelaar en kwaliteitsbouwer. Daarnaast beheert, belegt en financiert Bouwmaatschappij Verwelius in uiteenlopende projecten op gebied van woningbouw (grondgebonden en hoogbouw) en commercieel onroerend goed. De functie wordt in nauw overleg met de directeur uitgeoefend.</p>
-        <p>In een goede werksfeer en met een platte structuur realiseer je uitdagende projecten waarbij plezier in je werk essentieel is. We vergeten niet dat onze mensen de projecten maken en daarmee onze gezamenlijke toekomst. Dit doen we met elkaar op ons hoofdkantoor in Huizen of op één van de vele bouwlocaties waar we actief zijn.</p>
-        <h3>Taken:</h3>
-        <ul>
-          <li>Verantwoordelijk voor de voortgang van de gebiedsontwikkelingen incl. alle bijbehorende onderdelen;</li>
-          <li>Adviesrol (technische planontwikkeling) bij Bouwmaatschappij Verwelius;</li>
-          <li>Opstellen stichtingskosten opzet en haalbaarheidsstudies;</li>
-          <li>Acquisitie, verervingen, tenders;</li>
-          <li>Risico’s in projecten signaleren, analyseren en elimineren;</li>
-          <li>Het beheren en zorgdragen van een effectieve informatiestroom.</li>
-        </ul>
-        <h3>Functie-eisen:</h3>
-        <ul>
-          <li>Afgeronde HBO/WO opleiding richting Bouwkunde of Bouwtechnische bedrijfskunde;</li>
-          <li>Ervaring met grondgebonden en hoogbouw woonprojecten;</li>
-          <li>Ervaring met gietbouwsystemen;</li>
-          <li>Goede bouwkundige (detail-)kennis;</li>
-          <li>Sturen op GOTIK aspecten, incl. risico’s en kansen;</li>
-          <li>Geen 9-5 mentaliteit.</li>
-        </ul>
-        <p>Voor meer informatie kunt u contact opnemen met de heer S. Stappers, directeur, <a href="mailto:sstappers@verwelius.nl">sstappers@verwelius.nl</a></p>
-      </div>
-
-      <div id="job2" class="job-content">
-        <h2>Commercieel en technisch beheerder vastgoed</h2>
-        <p>Verwelius bezit als belegger een groot aantal huurwoningen en appartementen. In omvang zijn wij vergelijkbaar met een middelgrote woningbouwvereniging. Daarnaast zijn wij eigenaar van divers commercieel onroerend goed, zoals kantoorcomplexen en winkelpanden.</p>
-        <p>Vanwege een steeds groter wordende vastgoedportefeuille, zijn wij op zoek naar een ambitieuze Commercieel en Technisch Beheerder Vastgoed voor onze afdeling Onderhoud en Beheer.</p>
-        <h3>Taken:</h3>
-        <ul>
-          <li>Commercieel beheer van vastgoedportefeuille;</li>
-          <li>Beheer van het huurmutatieproces en contractvorming;</li>
-          <li>Financiële quick-scans en selectie van kandidaat-huurders;</li>
-          <li>Toezicht en handhaving woonfraude;</li>
-          <li>Opstellen van MeerjarenOnderhoudsPlanning (MJOP);</li>
-          <li>Opdrachten verstrekken aan onderaannemers en aansturen buitendienst;</li>
-          <li>Voorinspecties en opleveringen van mutaties.</li>
-        </ul>
-        <h3>Functie-eisen:</h3>
-        <ul>
-          <li>Gedegen technische basiskennis met een goed gevoel voor commercie;</li>
-          <li>Vaardig met 4PS of gelijkwaardig softwarepakket;</li>
-          <li>Praktisch, no-nonsense, goed kunnen plannen;</li>
-          <li>Communicatief vaardig (Nederlands en Engels);</li>
-          <li>Woonachtig nabij Huizen.</li>
-        </ul>
-        <p>Cv’s kunnen gestuurd worden aan dhr. Marc van Veldhuizen: <a href="mailto:mvanveldhuizen@verwelius.nl">mvanveldhuizen@verwelius.nl</a></p>
-      </div>
-
-      <div id="job3" class="job-content">
-        <h2>Uitvoerders woningbouw</h2>
-        <p>Vanwege het opstarten van twee nieuwbouwprojecten in Huizen (Havenzicht en Oude Haven), zijn wij op zoek naar Uitvoerders woningbouw.</p>
-        <h3>Taken:</h3>
-        <p>Als uitvoerder werk je samen met een ervaren Hoofduitvoerder. Je controleert of werkzaamheden volgens opdracht en tekening worden uitgevoerd en bewaakt de veiligheid en planning. Je stuurt eigen bouwplaatspersoneel aan en zorgt voor orde en netheid.</p>
-        <p>Je hebt de ambitie om binnen enkele jaren door te groeien naar hoofduitvoerder. Je durft verantwoordelijkheid te nemen en bent zeer prestatiegericht.</p>
-        <h3>Functie-eisen:</h3>
-        <ul>
-          <li>Tenminste een mbo-opleiding Bouwkunde;</li>
-          <li>Daadkrachtige en pragmatische persoonlijkheid;</li>
-          <li>Ambitieus en leergierig;</li>
-          <li>Schoolverlaters (mbo/hbo) worden nadrukkelijk uitgenodigd.</li>
-        </ul>
-        <p>Geïnteresseerd? Stuur je CV naar: <a href="mailto:vacancies@verwelius.nl">vacancies@verwelius.nl</a></p>
-      </div>
-
-      <div id="job4" class="job-content">
-        <h2>Binnendienst Medewerker Onderhoud en Beheer</h2>
-        <p>De afdeling Onderhoud en Beheer verzorgt het technisch en administratief beheer van onze vastgoedportefeuille. Vanwege groei zoeken wij een ambitieuze Binnendienst Medewerker.</p>
-        <h3>Taken:</h3>
-        <ul>
-          <li>Begeleiden van MJOP en EPV-monitoring;</li>
-          <li>Opdrachten verstrekken aan onderaannemers;</li>
-          <li>Inplannen van eigen medewerkers buitendienst;</li>
-          <li>Voorinspecties uitvoeren bij mutaties en financiële afronding;</li>
-          <li>Administratief verwerken en archiveren van werkzaamheden.</li>
-        </ul>
-        <h3>Functie-eisen:</h3>
-        <ul>
-          <li>Uitstekende kennis van Word, Excel en Outlook;</li>
-          <li>Goede beheersing van Nederlands en Engels;</li>
-          <li>Zelfstandig, doelgericht en nauwkeurig;</li>
-          <li>Basiskennis van elektra-, loodgieters- en timmerwerk is een pré.</li>
-        </ul>
-        <p>Stuur je CV naar dhr. Marc van Veldhuizen: <a href="mailto:mvanveldhuizen@verwelius.nl">mvanveldhuizen@verwelius.nl</a></p>
-      </div>
-
-      <div id="job5" class="job-content">
-        <h2>Junior/Medior/Senior Werkvoorbereider</h2>
-        <p>Wij zoeken een ambitieuze Bouwkundige voor de afdeling Werkvoorbereiding met passie voor seriematige woningbouw (>100 woningen).</p>
-        <h3>Taken:</h3>
-        <p>Je werkt zelfstandig aan de complete voorbereiding en planning van je eigen projecten. Je stuurt onderaannemers aan, controleert tekeningen en denkt de bouwlogistiek uit. Je bent van start tot uitvoering betrokken en bezoekt regelmatig de bouwplaats.</p>
-        <h3>Functie-eisen:</h3>
-        <ul>
-          <li>Bouwkundig inzicht en sterke communicatieve vaardigheden;</li>
-          <li>Ondernemende en accurate persoonlijkheid;</li>
-          <li>Schoolverlaters worden nadrukkelijk gevraagd te solliciteren.</li>
-          <li>Auto van de zaak is onderdeel van de voorwaarden.</li>
-        </ul>
-        <p>Stuur je CV naar dhr. Sjuul Stappers: <a href="mailto:sstappers@verwelius.nl">sstappers@verwelius.nl</a></p>
-      </div>
-
-      <div id="job6" class="job-content">
-        <h2>(Afstudeer)stages</h2>
-        <p>Wij bieden ambitieuze MBO en HBO Bouwkunde studenten meerdere stageplekken aan op ons hoofdkantoor in Huizen of op de bouwprojecten.</p>
-        <h3>Mogelijkheden op afdelingen:</h3>
-        <ul>
-          <li>Project Ontwikkeling</li>
-          <li>Kopersbegeleiding</li>
-          <li>Werkvoorbereiding</li>
-          <li>Uitvoering</li>
-          <li>Verhuur / Onderhoud & Beheer</li>
-        </ul>
-        <p>Na het afstuderen is het mogelijk om te beginnen in één van de vele startersfuncties binnen het bedrijf.</p>
-        <p>Geïnteresseerd? Stuur je CV naar: <a href="mailto:vacancies@verwelius.nl">vacancies@verwelius.nl</a></p>
-      </div>
-
+      <div id="dynamic-job-contents"></div>
       <img src="verwelius-logo-026-large copy.png" alt="Logo" class="card-logo">
     </div>
-
     <div class="jobs-container" id="side-menu">
-      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job1')">Gebiedsontwikkelaar</a>
-      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job2')">Commercieel en Technisch Beheerder Vastgoed</a>
-      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job3')">Uitvoerders Woningbouw</a>
-      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job4')">Binnendienst Medewerker Onderhoud en Beheer</a>
-      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job5')">Junior/Medior/Senior Werkvoorbereider</a>
-      <a href="javascript:void(0)" class="job-button nav-link" onclick="openJobPage('job6')">(Afstudeer) Stages</a>
-      
-      <a href="javascript:void(0)" id="back-btn-ui" class="back-btn" onclick="goHome()">Terug naar overzicht</a>
+      <div id="dynamic-job-buttons">
+        <p style="color:#fff; font-size:13px; font-weight:300; opacity:0.6; padding:10px 0; line-height:1.6;">Er zijn momenteel geen openstaande vacatures.<br>Kijk later nog eens terug.</p>
+      </div>
+      <a href="javascript:void(0)" id="back-btn-ui" class="back-btn" onclick="goHome()">← Terug naar overzicht</a>
     </div>
   </main>
 </div>
@@ -393,82 +694,1290 @@ li { margin-bottom: 8px; }
   <div class="footer-columns">
     <div class="column">
       <div class="column-title">website navigatie</div>
-      <a href="javascript:void(0)">home •</a>
-      <a href="javascript:void(0)">over Verwelius</a>
-      <a href="javascript:void(0)">onze kracht</a>
-      <a href="javascript:void(0)">aan- en verkoop</a>
-      <a href="javascript:void(0)">contact</a>
+      <a href="#" onclick="goHome(); return false;">home •</a>
+      <a href="https://www.verwelius.nl/over-verwelius" target="_blank">over Verwelius</a>
+      <a href="https://www.verwelius.nl/onze-kracht" target="_blank">onze kracht</a>
+      <a href="https://www.verwelius.nl/aan-en-verkoop" target="_blank">aan- en verkoop</a>
+      <a href="https://www.verwelius.nl/contact" target="_blank">contact</a>
     </div>
     <div class="column">
       <div class="column-title">taalkeuze</div>
-      <a href="javascript:void(0)">Nederlands •</a>
-      <a href="javascript:void(0)">English</a>
-      <a href="javascript:void(0)">Español</a>
+      <a href="#" onclick="return false;">Nederlands •</a>
+      <a href="https://www.verwelius.nl/en/" target="_blank">English</a>
+      <a href="https://www.verwelius.nl/es/" target="_blank">Español</a>
       <div class="sub-section">
         <div class="column-title">overig</div>
-        <a href="javascript:void(0)">cookie informatie</a>
-        <a href="javascript:void(0)">privacyverklaring</a>
-        <a href="javascript:void(0)">disclaimer</a>
-        <a href="javascript:void(0)">colofon</a>
+        <a href="https://www.verwelius.nl/cookies" target="_blank">cookie informatie</a>
+        <a href="https://www.verwelius.nl/privacy" target="_blank">privacyverklaring</a>
+        <a href="https://www.verwelius.nl/disclaimer" target="_blank">disclaimer</a>
+        <a href="https://www.verwelius.nl/colofon" target="_blank">colofon</a>
       </div>
     </div>
     <div class="column">
       <div class="column-title">corporate websites</div>
-      <a href="javascript:void(0)">algemene website</a>
-      <a href="javascript:void(0)">huurportaal</a>
-      <a href="javascript:void(0)">werken bij Verwelius</a>
+      <a href="https://www.verwelius.nl" target="_blank">algemene website</a>
+      <a href="https://huurportaal.verwelius.nl" target="_blank">huurportaal</a>
+      <a href="https://werkenbijverwelius.nl/">werken bij Verwelius</a>
       <div class="sub-section">
         <div class="column-title">project websites</div>
-        <a href="javascript:void(0)">aan de Braassem</a>
-        <a href="javascript:void(0)">de Grift</a>
-        <a href="javascript:void(0)">de Verbinding Zwammerdam</a>
-        <a href="javascript:void(0)">de Notentuin</a>
-        <a href="javascript:void(0)">Thuis in Huizen</a>
-        <a href="javascript:void(0)">Roots Lelystad</a>
-        <a href="javascript:void(0)">De Baarnsche Zoom</a>
+        <a href="https://aandebraassem.nl" target="_blank">aan de Braassem</a>
+        <a href="https://aandegrift.nl" target="_blank">de Grift</a>
+        <a href="https://www.deverbindingzwammerdam.nl" target="_blank">de Verbinding Zwammerdam</a>
+        <a href="https://www.thuisinhuizen.nl" target="_blank">Thuis in Huizen</a>
+        <a href="https://rootslelystad.nl" target="_blank">Roots Lelystad</a>
+        <a href="https://debaarnschezoom.nl" target="_blank">De Baarnsche Zoom</a>
       </div>
     </div>
   </div>
   <div class="footer-info">
-    <span>© 2026 Verwelius Holding B.V. &nbsp;•&nbsp; Postbus 323, 1270 AH Huizen &nbsp;•&nbsp; Energieweg 2, 1271 ED Huizen &nbsp;•&nbsp; T 035 - 528 40 00 &nbsp;•&nbsp; verwelius@verwelius.nl</span>
-    <img src="verwelius-logo-031-large copy.png" alt="Verwelius" class="footer-logo-bottom">
+    <span>© 2026 Verwelius Holding B.V. &nbsp;•&nbsp; Postbus 323, 1270 AH Huizen &nbsp;•&nbsp; Energieweg 2, 1271 ED Huizen &nbsp;•&nbsp; T 035 - 528 40 00 &nbsp;•&nbsp; <a href="mailto:verwelius@verwelius.nl" style="color:white; text-decoration:none;">verwelius@verwelius.nl</a></span>
+    <img src="verwelius-logo-033-large copy.png" alt="Verwelius" class="footer-logo-bottom">
   </div>
 </footer>
 
-<script>
-function openJobPage(jobId) {
-  const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(link => link.style.display = 'none');
-  document.getElementById('back-btn-ui').style.display = 'block';
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <button class="login-sluit" onclick="closeLogin()">&times;</button>
+    <h3>Verwelius Beheer</h3>
+    <p>Log in om het beheerpaneel te openen.</p>
+    <input type="text" id="login-gebruiker" placeholder="Gebruikersnaam" autocomplete="username">
+    <input type="password" id="login-ww" placeholder="Wachtwoord" autocomplete="current-password" onkeydown="if(event.key==='Enter') probeerLogin()">
+    <span class="login-fout" id="login-fout"></span>
+    <button class="job-button" style="background:#000; display:block; width:100%; text-align:center;" onclick="probeerLogin()">Inloggen</button>
+  </div>
+</div>
 
+<!-- ADMIN OVERLAY -->
+<div id="adminOverlay" class="overlay">
+  <div class="overlay-content">
+    <button style="float:right; cursor:pointer; font-size:28px; background:none; border:none; line-height:1;" onclick="closeAdmin()">&times;</button>
+    <h2 style="color:#000">Verwelius Beheer</h2>
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="showTab('vacatures-tab', this)">Vacatures Beheren</button>
+      <button class="tab-btn" onclick="showTab('sollicitaties-tab', this)">Sollicitaties Inzien</button>
+      <button class="tab-btn" onclick="showTab('vragen-tab', this)">Vragen Formulier</button>
+    </div>
+
+    <!-- TAB: VACATURES -->
+    <div id="vacatures-tab" class="admin-section active">
+      <h3>Nieuwe Vacature Toevoegen</h3>
+      <input type="text" id="v_titel" placeholder="Functie naam">
+      <div class="editor-wrap">
+        <div class="editor-toolbar" id="editorToolbar">
+          <select onchange="editorCmd('fontSize', this.value); this.blur();" title="Lettergrootte" style="width:110px;">
+            <option value="1">Klein (10px)</option><option value="2">Klein+ (13px)</option>
+            <option value="3" selected>Normaal (16px)</option><option value="4">Middel (18px)</option>
+            <option value="5">Groot (24px)</option><option value="6">Groter (32px)</option>
+            <option value="7">Grootst (48px)</option>
+          </select>
+          <div class="sep"></div>
+          <button onclick="editorCmd('bold')" title="Vet"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg></button>
+          <button onclick="editorCmd('italic')" title="Cursief"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"/></svg></button>
+          <button onclick="editorCmd('underline')" title="Onderstrepen"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/></svg></button>
+          <button onclick="editorCmd('strikeThrough')" title="Doorstrepen"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 19h4v-3h-4v3zM5 4v3h5v3h4V7h5V4H5zM3 14h18v-2H3v2z"/></svg></button>
+          <div class="sep"></div>
+          <div class="color-btn-wrap" title="Tekstkleur">
+            <span class="color-indicator" style="font-weight:700;">A</span>
+            <div class="color-bar" id="txtKleurBalk" style="background:#000;"></div>
+            <input type="color" id="txtKleur" value="#000000"
+              oninput="document.getElementById('txtKleurBalk').style.background=this.value"
+              onchange="editorCmd('foreColor', this.value);">
+          </div>
+          <div class="sep"></div>
+          <button onclick="editorCmd('justifyLeft')" title="Links"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15 15H3v2h12v-2zm0-8H3v2h12V7zM3 13h18v-2H3v2zm0 8h18v-2H3v2zM3 3v2h18V3H3z"/></svg></button>
+          <button onclick="editorCmd('justifyCenter')" title="Centreren"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7 15v2h10v-2H7zm-4 6h18v-2H3v2zm0-8h18v-2H3v2zm4-6v2h10V7H7zM3 3v2h18V3H3z"/></svg></button>
+          <button onclick="editorCmd('justifyRight')" title="Rechts"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21h18v-2H3v2zm6-4h12v-2H9v2zm-6-4h18v-2H3v2zm6-4h12V7H9v2zM3 3v2h18V3H3z"/></svg></button>
+          <div class="sep"></div>
+          <button onclick="editorCmd('insertUnorderedList')" title="Opsomming"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"/></svg></button>
+          <button onclick="editorCmd('insertOrderedList')" title="Genummerd"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z"/></svg></button>
+        </div>
+        <div class="editor-body" id="v_editor" contenteditable="true" data-placeholder="Omschrijving, taken en eisen..."></div>
+      </div>
+      <button class="job-button" style="background:#2c7a2c; display:inline-block; width:auto;" onclick="publishVacature()">Vacature Publiceren</button>
+
+      <!-- FOLD-OUT: BESTAANDE VACATURES BEWERKEN -->
+      <div style="border-top: 2px solid #ddd; padding-top: 20px; margin-top: 20px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; margin-bottom:10px;" onclick="toggleVacaturesBewerken()">
+          <h3 style="margin:0;">Gepubliceerde vacatures aanpassen</h3>
+          <span id="vacatures-bewerken-pijl" style="font-size:18px; transition:transform 0.2s;">&#9660;</span>
+        </div>
+        <div id="vacatures-bewerken-inhoud" style="display:none;">
+          <div id="admin-vacature-lijst"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: SOLLICITATIES -->
+    <div id="sollicitaties-tab" class="admin-section">
+      <h3>Binnengekomen Reacties</h3>
+      <div id="admin-sollicitatie-lijst"></div>
+    </div>
+
+    <!-- TAB: VRAGEN FORMULIER -->
+    <div id="vragen-tab" class="admin-section">
+      <h3>Nieuw veld toevoegen</h3>
+
+      <div style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
+        <input type="text" id="extra_vraag_naam" placeholder="Vraag (bijv. Wat is uw motivatie?)" style="flex:1; padding:10px;">
+      </div>
+      <div id="nv-voorwoord-rij" style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
+        <input type="text" id="extra_vraag_voorwoord" placeholder="Voorbeeld / placeholder (bijv. Typ hier uw antwoord...)" style="flex:1; padding:10px;">
+      </div>
+
+      <!-- Vraag type selector -->
+      <div style="margin-bottom:12px;">
+        <label style="font-size:12px; font-weight:700; color:#444; display:block; margin-bottom:6px;">Type vraag:</label>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <label style="display:flex; align-items:center; gap:5px; font-size:13px; cursor:pointer; padding:6px 12px; border:1px solid #ccc; border-radius:4px; background:#fff;">
+            <input type="radio" name="nv_type" value="tekst" checked onchange="toggleNVType(this.value)" style="margin:0; width:auto;"> Tekstveld
+          </label>
+          <label style="display:flex; align-items:center; gap:5px; font-size:13px; cursor:pointer; padding:6px 12px; border:1px solid #ccc; border-radius:4px; background:#fff;">
+            <input type="radio" name="nv_type" value="meerkeuze" onchange="toggleNVType(this.value)" style="margin:0; width:auto;"> Meerkeuze
+          </label>
+          <label style="display:flex; align-items:center; gap:5px; font-size:13px; cursor:pointer; padding:6px 12px; border:1px solid #ccc; border-radius:4px; background:#fff;">
+            <input type="radio" name="nv_type" value="upload" onchange="toggleNVType(this.value)" style="margin:0; width:auto;"> Bestandsupload
+          </label>
+        </div>
+      </div>
+
+      <!-- Meerkeuze opties (conditionally shown) -->
+      <div id="nv-meerkeuze-sectie" style="display:none; margin-bottom:12px; background:#fff; border:1px solid #ddd; border-radius:4px; padding:12px;">
+        <label style="font-size:12px; font-weight:700; color:#444; display:block; margin-bottom:8px;">Antwoordopties:</label>
+        <div id="nv-meerkeuze-opties">
+          <div class="meerkeuze-optie"><input type="text" placeholder="Optie 1 (bijv. Man)"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>
+          <div class="meerkeuze-optie"><input type="text" placeholder="Optie 2 (bijv. Vrouw)"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>
+          <div class="meerkeuze-optie"><input type="text" placeholder="Optie 3 (bijv. Anders)"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>
+        </div>
+        <button class="btn-optie-add" onclick="voegMKOptieToef('nv-meerkeuze-opties')">+ Optie toevoegen</button>
+      </div>
+
+      <button class="job-button" style="background:#000; white-space:nowrap; display:inline-block; width:auto;" onclick="voegVraagToe()">Veld Toevoegen</button>
+
+      <!-- SECTIE 2: VRAGEN BEWERKEN (dropdown) -->
+      <div style="border-top: 2px solid #ddd; padding-top: 20px; margin-top: 10px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; margin-bottom:6px;" onclick="toggleVragenBewerken()">
+          <h3 style="margin:0;">Bestaande vragen bewerken</h3>
+          <span id="vragen-bewerken-pijl" style="font-size:18px; transition:transform 0.2s;">&#9660;</span>
+        </div>
+        <div id="vragen-bewerken-inhoud" style="display:none;">
+          <div style="font-size:12px; color:#888; margin-bottom:10px;" id="vragen-teller"></div>
+          <div id="vraag-edit-lijst"></div>
+        </div>
+      </div>
+
+      <!-- SECTIE 3: VRAGEN PER VACATURE -->
+      <div style="border-top: 2px solid #ddd; padding-top: 20px; margin-top: 10px;">
+        <h3 style="margin-bottom:12px;">Vragen per vacature</h3>
+        <div id="admin-vragen-per-vacature"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ============================================================
+// BEVESTIG DIALOG
+// ============================================================
+let confirmCallback = null;
+
+function toonConfirm(titel, bericht, jaTekst, callback) {
+  document.getElementById('confirmTitle').textContent = titel || 'Weet u het zeker?';
+  document.getElementById('confirmMsg').textContent = bericht || 'Deze actie kan niet ongedaan worden gemaakt.';
+  document.querySelector('.confirm-btn-ja').textContent = jaTekst || 'Ja, verwijderen';
+  confirmCallback = callback;
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+
+function confirmAntwoord(ja) {
+  document.getElementById('confirmOverlay').classList.remove('open');
+  if (ja && confirmCallback) confirmCallback();
+  confirmCallback = null;
+}
+
+// ============================================================
+// RICH TEXT EDITOR
+// ============================================================
+function editorCmd(cmd, val) {
+  document.getElementById('v_editor').focus();
+  document.execCommand(cmd, false, val || null);
+}
+
+// ============================================================
+// DATA STORAGE (localStorage)
+// ============================================================
+function getVacatures() { return JSON.parse(localStorage.getItem('vw_vacatures') || '[]'); }
+function saveVacatures(list) { localStorage.setItem('vw_vacatures', JSON.stringify(list)); }
+function getSollicitaties() { return JSON.parse(localStorage.getItem('vw_sollicitaties') || '[]'); }
+function saveSollicitaties(list) { localStorage.setItem('vw_sollicitaties', JSON.stringify(list)); }
+function getExtraVragen() { return JSON.parse(localStorage.getItem('vw_extra_vragen') || '[]'); }
+function saveExtraVragen(list) { localStorage.setItem('vw_extra_vragen', JSON.stringify(list)); renderDynamicJobs(); }
+function getVraagVolgorde() { return JSON.parse(localStorage.getItem('vw_vraag_volgorde') || '{}'); }
+function saveVraagVolgorde(obj) { localStorage.setItem('vw_vraag_volgorde', JSON.stringify(obj)); renderDynamicJobs(); }
+
+// ============================================================
+// NAVIGATIE
+// ============================================================
+function openJobPage(id) {
   document.getElementById('main-text').style.display = 'none';
-  const contents = document.querySelectorAll('.job-content');
-  contents.forEach(c => c.style.display = 'none');
-  
-  const activeJob = document.getElementById(jobId);
-  activeJob.style.display = 'flex';
-  activeJob.scrollTop = 0;
-  
-  document.body.style.overflow = 'hidden';
-  document.getElementById('footer').style.display = 'none';
-  document.getElementById('wrapper').style.marginBottom = '0';
+  document.querySelectorAll('.job-content').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('.nav-link').forEach(b => b.style.display = 'none');
+  document.getElementById('back-btn-ui').style.display = 'block';
+  const el = document.getElementById(id);
+  if (el) el.style.display = 'flex';
   window.scrollTo(0, 0);
 }
 
 function goHome() {
-  const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(link => link.style.display = 'block');
+  document.querySelectorAll('.nav-link').forEach(l => l.style.display = 'block');
   document.getElementById('back-btn-ui').style.display = 'none';
-
   document.getElementById('main-text').style.display = 'block';
-  const contents = document.querySelectorAll('.job-content');
-  contents.forEach(c => c.style.display = 'none');
-  
-  document.body.style.overflow = 'auto';
-  document.getElementById('footer').style.display = 'flex';
-  document.getElementById('wrapper').style.marginBottom = 'var(--footer-real-height)';
+  document.querySelectorAll('.job-content').forEach(c => c.style.display = 'none');
 }
-</script>
 
+// ============================================================
+// NAVIGATIE MENU
+// ============================================================
+function openNavMenu() {
+  document.getElementById('navMenu').classList.add('open');
+  animeerChevron('2,2 11,12 20,2', '2,12 11,2 20,12');
+  document.body.style.overflow = 'hidden';
+}
+function closeNavMenu() {
+  document.getElementById('navMenu').classList.remove('open');
+  animeerChevron('2,12 11,2 20,12', '2,2 11,12 20,2');
+  document.body.style.overflow = 'auto';
+}
+
+// ============================================================
+// LOGIN
+// ============================================================
+const ADMIN_GEBRUIKER = 'admin';
+const ADMIN_WW = 'Verwelius2026';
+
+function openAdmin() {
+  if (sessionStorage.getItem('vw_ingelogd') === 'ja') {
+    openAdminPanel();
+  } else {
+    document.getElementById('login-gebruiker').value = '';
+    document.getElementById('login-ww').value = '';
+    document.getElementById('login-fout').textContent = '';
+    document.getElementById('loginOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('login-gebruiker').focus(), 100);
+  }
+}
+function animeerChevron(van, naar) {
+  const el = document.getElementById('menuChevronPoly');
+  if (!el) return;
+
+  function parsePoints(str) {
+    return str.trim().split(' ').map(p => p.split(',').map(Number));
+  }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+  const from = parsePoints(van);
+  const to = parsePoints(naar);
+  const duration = 400;
+  let startTime = null;
+
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    const t = Math.min((ts - startTime) / duration, 1);
+    const eased = easeInOut(t);
+    const pts = from.map((p, i) => [
+      lerp(p[0], to[i][0], eased),
+      lerp(p[1], to[i][1], eased)
+    ]);
+    el.setAttribute('points', pts.map(p => p.join(',')).join(' '));
+    if (t < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
+function probeerLogin() {
+  const gebruiker = document.getElementById('login-gebruiker').value.trim();
+  const ww = document.getElementById('login-ww').value;
+  if (gebruiker === ADMIN_GEBRUIKER && ww === ADMIN_WW) {
+    sessionStorage.setItem('vw_ingelogd', 'ja');
+    document.getElementById('loginOverlay').classList.remove('open');
+    openAdminPanel();
+  } else {
+    document.getElementById('login-fout').textContent = 'Gebruikersnaam of wachtwoord onjuist.';
+    document.getElementById('login-ww').value = '';
+    document.getElementById('login-ww').focus();
+  }
+}
+
+function closeLogin() {
+  document.getElementById('loginOverlay').classList.remove('open');
+  document.body.style.overflow = 'auto';
+}
+
+// ============================================================
+// MEERKEUZE OPTIES HELPERS
+// ============================================================
+function toggleNieuwVraagPanel() { /* verwijderd - geen actie nodig */ }
+
+function toggleNVType(type) {
+  document.getElementById('nv-meerkeuze-sectie').style.display = type === 'meerkeuze' ? 'block' : 'none';
+  document.getElementById('nv-voorwoord-rij').style.display = type === 'tekst' ? 'flex' : 'none';
+}
+
+function voegMKOptieToef(containerId) {
+  const c = document.getElementById(containerId);
+  const count = c.querySelectorAll('.meerkeuze-optie').length + 1;
+  const div = document.createElement('div');
+  div.className = 'meerkeuze-optie';
+  div.innerHTML = `<input type="text" placeholder="Optie ${count}"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button>`;
+  c.appendChild(div);
+}
+
+function verwijderMKOptie(btn) {
+  const parent = btn.parentElement;
+  const container = parent.parentElement;
+  if (container.querySelectorAll('.meerkeuze-optie').length <= 1) return;
+  parent.remove();
+}
+
+function getMKOpties(containerId) {
+  const inputs = document.querySelectorAll('#' + containerId + ' .meerkeuze-optie input');
+  return Array.from(inputs).map(i => i.value.trim()).filter(v => v !== '');
+}
+
+// ============================================================
+// ONLINE/OFFLINE TOGGLE
+// ============================================================
+function toggleOnlineStatus(id) {
+  const vacatures = getVacatures();
+  const job = vacatures.find(v => v.id === id);
+  if (job) {
+    job.online = !job.online;
+    saveVacatures(vacatures);
+    renderAdminVacatures();
+    renderDynamicJobs();
+  }
+}
+
+// ============================================================
+// VACATURE INLINE EDIT (fold-out)
+// ============================================================
+function toggleVacEdit(id) {
+  const body = document.getElementById('vedit-body-' + id);
+  const ch = document.getElementById('vedit-ch-' + id);
+  if (!body) return;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.inline-vac-edit-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('[id^="vedit-ch-"]').forEach(c => c.style.transform = '');
+  if (!isOpen) {
+    body.classList.add('open');
+    if (ch) ch.style.transform = 'rotate(180deg)';
+  }
+}
+
+function slaInlineVacOp(id) {
+  const titel = document.getElementById('ive-titel-' + id).value.trim();
+  const editor = document.getElementById('ive-editor-' + id);
+  const tekst = editor.innerHTML.trim();
+  const tekstPlain = editor.innerText.trim();
+  if (!titel || !tekstPlain) {
+    alert('Vul een functie naam en omschrijving in.');
+    return;
+  }
+  const vacatures = getVacatures();
+  const job = vacatures.find(x => x.id === id);
+  if (job) {
+    job.titel = titel;
+    job.tekst = tekst;
+    saveVacatures(vacatures);
+    renderAdminVacatures();
+    renderDynamicJobs();
+  }
+  const body = document.getElementById('vedit-body-' + id);
+  if (body) body.classList.remove('open');
+  const ch = document.getElementById('vedit-ch-' + id);
+  if (ch) ch.style.transform = '';
+}
+
+function inlinEditorCmd(id, cmd, val) {
+  document.getElementById('ive-editor-' + id).focus();
+  document.execCommand(cmd, false, val || null);
+}
+
+// ============================================================
+// VACATURE PUBLICEREN / VERWIJDEREN
+// ============================================================
+function openAdminPanel() {
+  renderAdminVacatures();
+  renderAdminSollicitaties();
+  renderAdminVragenPerVacature();
+  renderVacatureKeuze();
+  renderVraagEditLijst();
+  document.getElementById('adminOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.body.style.overflow = 'auto';
+}
+
+function showTab(tabId, btn) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (tabId === 'vragen-tab') {
+    renderVraagEditLijst();
+    renderAdminVragenPerVacature();
+    renderVacatureKeuze();
+  }
+}
+
+function publishVacature() {
+  const titel = document.getElementById('v_titel').value.trim();
+  const editor = document.getElementById('v_editor');
+  const tekst = editor.innerHTML.trim();
+  const tekstPlain = editor.innerText.trim();
+  if (!titel || !tekstPlain) { alert('Vul een functie naam en omschrijving in.'); return; }
+  const vacatures = getVacatures();
+  const id = 'dyn_' + Date.now();
+  vacatures.push({ id, titel, tekst, online: true });
+  saveVacatures(vacatures);
+
+  document.getElementById('v_titel').value = '';
+  editor.innerHTML = '';
+  renderAdminVacatures();
+  renderDynamicJobs();
+}
+
+function deleteVacature(id) {
+  toonConfirm(
+    'Vacature verwijderen?',
+    'Weet u zeker dat u deze vacature wilt verwijderen? Dit kan niet ongedaan worden gemaakt.',
+    'Ja, verwijderen',
+    () => {
+      let vacatures = getVacatures().filter(v => v.id !== id);
+      saveVacatures(vacatures);
+      renderAdminVacatures();
+      renderDynamicJobs();
+    }
+  );
+}
+
+// ============================================================
+// RENDER ADMIN VACATURES — inline fold-out bewerken
+// ============================================================
+function renderAdminVacatures() {
+  const vacatures = getVacatures();
+  const container = document.getElementById('admin-vacature-lijst');
+  if (!container) return;
+  if (vacatures.length === 0) {
+    container.innerHTML = '<p style="color:#666; padding:15px; font-style:italic;">Geen vacatures gepubliceerd.</p>';
+    return;
+  }
+  container.innerHTML = vacatures.map(job => {
+    const isOnline = job.online !== false;
+    const badgeKlasse = isOnline ? 'status-online' : 'status-offline';
+    const badgeTekst = isOnline ? 'Online' : 'Offline';
+    const toggleKleur = isOnline ? '#e67e22' : '#2c7a2c';
+    const toggleLabel = isOnline ? 'Zet offline' : 'Zet online';
+    const safeId = job.id;
+    const safeTitel = job.titel.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+    return `
+    <div class="inline-vac-edit" style="margin-bottom:8px;">
+      <div class="inline-vac-edit-header">
+        <div style="flex:1; min-width:0;">
+          <span style="font-weight:700; font-size:14px;">${job.titel}</span>
+          <span class="status-badge ${badgeKlasse}">${badgeTekst}</span>
+        </div>
+        <div style="display:flex; gap:6px; flex-shrink:0; flex-wrap:wrap; align-items:center;">
+          <button class="job-button" style="width:auto; padding:5px 10px; background:${toggleKleur}; font-size:12px;" 
+            onclick="event.stopPropagation(); toggleOnlineStatus('${safeId}')">${toggleLabel}</button>
+          <button class="job-button" style="width:auto; padding:5px 10px; background:#444; font-size:12px;" 
+            onclick="event.stopPropagation(); toggleVacEdit('${safeId}')">✏ Bewerken</button>
+          <button class="btn-delete" style="padding:5px 10px; font-size:12px;" 
+            onclick="event.stopPropagation(); deleteVacature('${safeId}')">Wissen</button>
+          <span id="vedit-ch-${safeId}" style="font-size:12px; color:#aaa; transition:transform 0.2s; pointer-events:none;">▼</span>
+        </div>
+      </div>
+      <div class="inline-vac-edit-body" id="vedit-body-${safeId}">
+        <label style="font-size:12px; font-weight:700; color:#444; display:block; margin-bottom:4px;">Functie naam</label>
+        <input type="text" id="ive-titel-${safeId}" value="${safeTitel}" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-family:inherit; font-size:14px; box-sizing:border-box; margin-bottom:12px; background:#fff;">
+        <label style="font-size:12px; font-weight:700; color:#444; display:block; margin-bottom:4px;">Omschrijving</label>
+        <div class="editor-wrap" style="margin-bottom:14px;">
+          <div class="editor-toolbar">
+            <select onchange="inlinEditorCmd('${safeId}','fontSize',this.value);this.blur();" style="width:100px; font-size:11px;">
+              <option value="3" selected>Normaal</option><option value="1">Klein</option>
+              <option value="4">Middel</option><option value="5">Groot</option>
+            </select>
+            <div class="sep"></div>
+            <button onclick="inlinEditorCmd('${safeId}','bold')" title="Vet"><b style="font-size:13px;">B</b></button>
+            <button onclick="inlinEditorCmd('${safeId}','italic')" title="Cursief"><i style="font-size:13px;">I</i></button>
+            <button onclick="inlinEditorCmd('${safeId}','underline')" title="Onderstrepen"><u style="font-size:13px;">U</u></button>
+            <div class="sep"></div>
+            <button onclick="inlinEditorCmd('${safeId}','insertUnorderedList')" title="Lijst">≡</button>
+          </div>
+          <div class="editor-body" id="ive-editor-${safeId}" contenteditable="true" data-placeholder="Omschrijving...">${job.tekst || ''}</div>
+        </div>
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button onclick="toggleVacEdit('${safeId}')" style="padding:8px 16px; background:#888; color:#fff; border:none; border-radius:4px; font-family:inherit; font-size:13px; cursor:pointer;">Annuleren</button>
+          <button onclick="slaInlineVacOp('${safeId}')" style="padding:8px 20px; background:#2c7a2c; color:#fff; border:none; border-radius:4px; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer;">Opslaan ✓</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// VRAGEN BEWERKEN
+// ============================================================
+function renderVraagEditLijst() {
+  const container = document.getElementById('vraag-edit-lijst');
+  const teller = document.getElementById('vragen-teller');
+  if (!container) return;
+  const vragen = getExtraVragen();
+  const vacatures = getVacatures();
+  if (teller) teller.textContent = vragen.length + ' vra' + (vragen.length === 1 ? 'ag' : 'gen') + ' aangemaakt';
+  if (vragen.length === 0) {
+    container.innerHTML = '<p class="leeg-melding" style="padding:10px 0;">Er zijn nog geen vragen aangemaakt.</p>';
+    return;
+  }
+  container.innerHTML = vragen.map((vraag, idx) => {
+    const naam = typeof vraag === 'object' ? vraag.naam : vraag;
+    const voorwoord = typeof vraag === 'object' ? (vraag.voorwoord || '') : '';
+    const verplicht = typeof vraag === 'object' ? !!vraag.verplicht : false;
+    const type = typeof vraag === 'object' ? (vraag.type || 'tekst') : 'tekst';
+    const vac = typeof vraag === 'object' && vraag.vacatures ? vraag.vacatures : 'alle';
+    let vacTekst = vac === 'alle' ? 'Alle vacatures' : (Array.isArray(vac) && vac.length === 0 ? 'Geen vacature' : Array.isArray(vac) ? vac.map(vid => { const j = vacatures.find(v => v.id === vid); return j ? j.titel : vid; }).join(', ') : '');
+    const typeBadgeClass = type === 'meerkeuze' ? 'type-meerkeuze' : type === 'upload' ? 'type-upload' : 'type-tekst';
+    const typeTekst = type === 'meerkeuze' ? 'Meerkeuze' : type === 'upload' ? 'Upload' : 'Tekst';
+    const panelId = 'vedit-panel-' + idx;
+    const opties = typeof vraag === 'object' && vraag.opties ? vraag.opties : [];
+
+    return `
+    <div class="vraag-edit-card" id="vedit-card-${idx}" draggable="true" data-global-idx="${idx}"
+      ondragstart="gvDragStart(event)" ondragover="gvDragOver(event)" ondrop="gvDrop(event)" ondragend="gvDragEnd(event)">
+      <div class="vraag-edit-header" onclick="toggleVraagEditPanel(${idx})">
+        <div onclick="event.stopPropagation()" style="cursor:grab; padding:4px 6px; flex-shrink:0; display:flex; flex-direction:column; gap:3px; opacity:0.4;" title="Slepen om te hersorteren">
+          <div style="width:16px; height:2px; background:#555; border-radius:1px;"></div>
+          <div style="width:16px; height:2px; background:#555; border-radius:1px;"></div>
+        </div>
+        <div style="flex:1; min-width:0;">
+          <div class="vraag-edit-title">${naam} <span class="type-badge ${typeBadgeClass}">${typeTekst}</span>${verplicht ? ' <span class="vraag-edit-badge badge-verplicht" style="font-size:10px; padding:1px 5px;">Verplicht</span>' : ''}</div>
+          <div class="vraag-edit-sub">${voorwoord ? 'Voorbeeld: ' + voorwoord : ''}</div>
+        </div>
+        <span id="vedit-ch-${idx}" style="font-size:11px; color:#aaa; margin-left:8px; transition:transform 0.2s; flex-shrink:0;">▼</span>
+      </div>
+      <div class="vraag-edit-body" id="${panelId}">
+        <label>Vraag</label>
+        <input type="text" id="vedit-naam-${idx}" value="${naam.replace(/"/g,'&quot;')}" placeholder="Bijv. Wat is uw motivatie?">
+        ${type !== 'upload' ? `<label>Voorbeeld (placeholder in het vakje)</label><input type="text" id="vedit-vw-${idx}" value="${voorwoord.replace(/"/g,'&quot;')}" placeholder="Bijv. Typ hier uw antwoord...">` : `<input type="hidden" id="vedit-vw-${idx}" value="">`}
+        ${type === 'meerkeuze' ? `
+        <label>Antwoordopties</label>
+        <div id="vedit-mk-${idx}">
+          ${opties.map((o,oi) => `<div class="meerkeuze-optie"><input type="text" value="${o.replace(/"/g,'&quot;')}"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>`).join('')}
+          ${opties.length === 0 ? '<div class="meerkeuze-optie"><input type="text" placeholder="Optie 1"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>' : ''}
+        </div>
+        <button class="btn-optie-add" onclick="voegMKOptieToef('vedit-mk-${idx}')">+ Optie toevoegen</button>` : ''}
+        <div class="vraag-edit-acties">
+          <button class="btn-opslaan" onclick="slaVraagOpMetIdx(${idx})">Opslaan</button>
+          <button class="btn-annuleer" onclick="toggleVraagEditPanel(${idx})">Annuleren</button>
+          <button class="btn-delete" style="margin-left:auto;" onclick="verwijderVraagGlobaal(${idx})">Vraag verwijderen</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleVraagEditPanel(idx) {
+  const panel = document.getElementById('vedit-panel-' + idx);
+  const card = document.getElementById('vedit-card-' + idx);
+  const ch = document.getElementById('vedit-ch-' + idx);
+  if (!panel) return;
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  card.classList.toggle('is-editing', !isOpen);
+  if (ch) ch.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+function slaVraagOpMetIdx(idx) {
+  const vragen = getExtraVragen();
+  if (!vragen[idx]) return;
+  const nieuwNaam = document.getElementById('vedit-naam-' + idx).value.trim();
+  const nieuwVw = (document.getElementById('vedit-vw-' + idx) || {}).value || '';
+  const nieuwVerplicht = vragen[idx].verplicht || false;
+  if (!nieuwNaam) { alert('De vraag mag niet leeg zijn.'); return; }
+
+  const type = vragen[idx].type || 'tekst';
+  let nieuweOpties = vragen[idx].opties || [];
+  if (type === 'meerkeuze') {
+    nieuweOpties = getMKOpties('vedit-mk-' + idx);
+  }
+
+  vragen[idx] = { ...vragen[idx], naam: nieuwNaam, voorwoord: nieuwVw.trim(), verplicht: nieuwVerplicht, opties: nieuweOpties };
+  saveExtraVragen(vragen);
+  renderVraagEditLijst();
+  renderAdminVragenPerVacature();
+  getVacatures().forEach(job => {
+    const dropEl = document.getElementById(('vdrop-' + job.id).replace(/[^a-zA-Z0-9\-_]/g, '_'));
+    if (dropEl && dropEl.style.display !== 'none') herrenderdropblock(job.id);
+  });
+}
+
+function verwijderVraagGlobaal(idx) {
+  toonConfirm(
+    'Vraag verwijderen?',
+    'Weet u zeker dat u deze vraag wilt verwijderen? De vraag wordt van alle vacatures verwijderd.',
+    'Ja, verwijderen',
+    () => {
+      const vragen = getExtraVragen();
+      vragen.splice(idx, 1);
+      saveExtraVragen(vragen);
+      renderVraagEditLijst();
+      renderAdminVragenPerVacature();
+    }
+  );
+}
+
+// ============================================================
+// VRAGEN PER VACATURE
+// ============================================================
+function getVragenVoorVacature(jobId) {
+  const vragen = getExtraVragen();
+  const volgorde = getVraagVolgorde();
+  const jobVolgorde = volgorde[jobId] || null;
+  const vragenVoorJob = vragen.filter(vraag => {
+    const vac = typeof vraag === 'object' && vraag.vacatures ? vraag.vacatures : [];
+    return Array.isArray(vac) && vac.includes(jobId);
+  });
+  if (jobVolgorde) {
+    vragenVoorJob.sort((a, b) => {
+      const nA = typeof a === 'object' ? a.naam : a;
+      const nB = typeof b === 'object' ? b.naam : b;
+      const iA = jobVolgorde.indexOf(nA);
+      const iB = jobVolgorde.indexOf(nB);
+      if (iA === -1 && iB === -1) return 0;
+      if (iA === -1) return 1;
+      if (iB === -1) return -1;
+      return iA - iB;
+    });
+  }
+  return vragenVoorJob;
+}
+
+function bouwVraagRijen(job, vragen, vacatures, alleVragen) {
+  const encodedJobId = job.id.replace(/"/g, '&quot;');
+  const rijen = vragen.length === 0
+    ? `<div style="padding:12px 15px; color:#aaa; font-style:italic; font-size:13px;">Geen vragen voor deze vacature.</div>`
+    : vragen.map((vraag, idx) => {
+        const naam = typeof vraag === 'object' ? vraag.naam : vraag;
+        const voorwoord = typeof vraag === 'object' ? (vraag.voorwoord || '') : '';
+        const verplicht = typeof vraag === 'object' ? vraag.verplicht : false;
+        const type = typeof vraag === 'object' ? (vraag.type || 'tekst') : 'tekst';
+        const globaleIdx = alleVragen.findIndex(v => (typeof v === 'object' ? v.naam : v) === naam);
+        const encodedNaam = naam.replace(/"/g, '&quot;');
+        const typeBadgeClass = type === 'meerkeuze' ? 'type-meerkeuze' : type === 'upload' ? 'type-upload' : 'type-tekst';
+        const typeTekst = type === 'meerkeuze' ? 'Meerkeuze' : type === 'upload' ? 'Upload' : 'Tekst';
+
+        return `
+        <div draggable="true" data-job="${encodedJobId}" data-naam="${encodedNaam}"
+          ondragstart="vqDragStart(event)" ondragover="vqDragOver(event)" ondrop="vqDrop(event)" ondragend="vqDragEnd(event)"
+          style="border-top:1px solid #eee; background:${idx % 2 === 0 ? '#fff' : '#fafafa'}; display:flex; align-items:center; gap:8px; padding:10px 14px;">
+          <div onclick="event.stopPropagation()" style="cursor:grab; padding:4px 6px; flex-shrink:0; display:flex; flex-direction:column; gap:3px; opacity:0.4;" title="Slepen om te hersorteren">
+            <div style="width:16px; height:2px; background:#555; border-radius:1px;"></div>
+            <div style="width:16px; height:2px; background:#555; border-radius:1px;"></div>
+          </div>
+          <div style="flex:1; min-width:0;">
+            <span style="font-size:13px; font-weight:700;">${naam}</span>
+            <span class="type-badge ${typeBadgeClass}" style="font-size:10px; padding:1px 5px;">${typeTekst}</span>
+            ${verplicht ? '<span style="font-size:11px; color:#c0392b; margin-left:4px;">(verplicht)</span>' : ''}
+            ${voorwoord ? `<div style="font-size:11px; color:#777; margin-top:1px;">${voorwoord}</div>` : ''}
+          </div>
+          <button onclick="ontkoppelVraagVanVacature(${globaleIdx}, '${encodedJobId}')"
+            style="font-size:11px; padding:3px 9px; background:#c0392b; color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:inherit; flex-shrink:0;">✕ Verwijderen</button>
+        </div>`;
+      }).join('');
+
+  const gekoppeldeNamen = vragen.map(v => typeof v === 'object' ? v.naam : v);
+  const beschikbaar = alleVragen.filter(v => {
+    const n = typeof v === 'object' ? v.naam : v;
+    return !gekoppeldeNamen.includes(n);
+  });
+  const addPickerDropId = ('vadd-' + job.id).replace(/[^a-zA-Z0-9\-_]/g, '_');
+  const addPicker = beschikbaar.length === 0
+    ? `<div style="padding:10px 14px; border-top:1px solid #eee; font-size:12px; color:#aaa; font-style:italic;">Geen andere vragen beschikbaar.</div>`
+    : `<div style="padding:8px 14px; border-top:1px solid #eee; background:#f9f9f9;">
+        <button onclick="toggleAddPicker('${addPickerDropId}')" id="btn-${addPickerDropId}" style="font-size:12px; padding:5px 12px; background:#2c7a2c; color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:inherit;">+ Vraag toevoegen</button>
+        <div id="${addPickerDropId}" style="display:none; margin-top:8px; background:#f4f4f4; border:1px solid #ddd; border-radius:6px; box-shadow:0 4px 16px rgba(0,0,0,0.13); overflow:hidden; z-index:200; position:relative;">
+          <div style="padding:10px 12px; border-bottom:1px solid #eee; font-size:12px; font-weight:700; color:#444; background:#f5f5f5;">Selecteer vragen om toe te voegen</div>
+          <div style="max-height:280px; overflow-y:auto;">
+          ${beschikbaar.map((v, i) => {
+            const n = typeof v === 'object' ? v.naam : v;
+            const type = typeof v === 'object' ? (v.type || 'tekst') : 'tekst';
+            const verplicht = typeof v === 'object' ? !!v.verplicht : false;
+            const gIdx = alleVragen.findIndex(x => (typeof x === 'object' ? x.naam : x) === n);
+            const checkId = addPickerDropId + '_c' + i;
+            const typeBadgeClass = type === 'meerkeuze' ? 'type-meerkeuze' : type === 'upload' ? 'type-upload' : 'type-tekst';
+            const typeTekst = type === 'meerkeuze' ? 'Meerkeuze' : type === 'upload' ? 'Upload' : 'Tekst';
+            const borderColor = type === 'meerkeuze' ? '#e67e22' : type === 'upload' ? '#2980b9' : '#444';
+            return `<label id="lbl-${checkId}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-top:${i > 0 ? '1px solid #eee' : 'none'}; border-left:4px solid ${borderColor}; font-size:13px; cursor:pointer; user-select:none; background:#fff; transition:background 0.15s;" onmouseenter="this.style.background='#f7f7f7'" onmouseleave="this.style.background=this.dataset.sel==='1'?'#e8f5e9':'#fff'">
+              <input type="checkbox" id="${checkId}" data-gidx="${gIdx}" data-naam="${n.replace(/"/g,'&quot;')}" class="add-picker-check-${addPickerDropId}" style="display:none;" onchange="updateAddPickerTeller('${addPickerDropId}'); updateAddPickerItem(this, 'lbl-${checkId}')">
+              <span id="icon-${checkId}" style="width:18px; height:18px; border:2px solid #ccc; border-radius:4px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#fff;"></span>
+              <div style="flex:1; min-width:0;">
+                <span style="font-weight:700; font-size:14px; color:#000;">${n}</span>
+                <span class="type-badge ${typeBadgeClass}" style="margin-left:6px;">${typeTekst}</span>
+                ${verplicht ? '<span class="vraag-edit-badge badge-verplicht" style="font-size:10px; padding:1px 5px; margin-left:4px;">Verplicht</span>' : ''}
+              </div>
+            </label>`;
+          }).join('')}
+          </div>
+          <div style="padding:8px 12px; border-top:1px solid #eee; background:#f9f9f9; display:flex; gap:8px; justify-content:space-between; align-items:center;">
+            <span id="teller-${addPickerDropId}" style="font-size:11px; color:#888;">Niets geselecteerd</span>
+            <div style="display:flex; gap:8px;">
+              <button onclick="toggleAddPicker('${addPickerDropId}')" style="font-size:12px; padding:5px 12px; background:#888; color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:inherit;">Annuleren</button>
+              <button onclick="bevestigVragenToevoegen('${addPickerDropId}', '${encodedJobId}')" style="font-size:12px; padding:5px 14px; background:#2c7a2c; color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:inherit; font-weight:700;">Done ✓</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  return rijen + addPicker;
+}
+
+function toggleAddPicker(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const willOpen = el.style.display === 'none';
+  if (!willOpen) {
+    el.querySelectorAll('input[type="checkbox"]').forEach(c => { if (c.checked) { c.checked = false; updateAddPickerItem(c, 'lbl-' + c.id); } });
+    const teller = document.getElementById('teller-' + id);
+    if (teller) teller.textContent = 'Niets geselecteerd';
+  }
+  el.style.display = willOpen ? 'block' : 'none';
+  if (willOpen) {
+    el.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+    document.querySelectorAll('[id^="vadd-"]').forEach(other => { if (other.id !== id) other.style.display = 'none'; });
+    setTimeout(() => {
+      document.addEventListener('click', function outsideClick(e) {
+        if (!el.contains(e.target) && !e.target.closest('button[onclick*="' + id + '"]')) {
+          el.style.display = 'none';
+          document.removeEventListener('click', outsideClick);
+        }
+      });
+    }, 50);
+  }
+}
+
+function updateAddPickerItem(checkbox, labelId) {
+  const icon = document.getElementById('icon-' + checkbox.id);
+  const label = document.getElementById(labelId);
+  if (!icon) return;
+  if (checkbox.checked) {
+    icon.style.background = '#2c7a2c'; icon.style.borderColor = '#2c7a2c';
+    icon.innerHTML = '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    if (label) { label.style.background = '#e8f5e9'; label.dataset.sel = '1'; }
+  } else {
+    icon.style.background = '#fff'; icon.style.borderColor = '#ccc'; icon.innerHTML = '';
+    if (label) { label.style.background = '#fff'; label.dataset.sel = '0'; }
+  }
+}
+
+function updateAddPickerTeller(pickerId) {
+  const checks = document.querySelectorAll(`.add-picker-check-${pickerId}:checked`);
+  const teller = document.getElementById('teller-' + pickerId);
+  if (teller) teller.textContent = checks.length === 0 ? 'Niets geselecteerd' : checks.length + ' geselecteerd';
+}
+
+function bevestigVragenToevoegen(pickerId, jobId) {
+  const checks = document.querySelectorAll(`.add-picker-check-${pickerId}:checked`);
+  if (checks.length === 0) { document.getElementById(pickerId).style.display = 'none'; return; }
+  const indices = Array.from(checks).map(c => parseInt(c.getAttribute('data-gidx'), 10));
+  const vragen = getExtraVragen();
+  const alleVacIds = getVacatures().map(v => v.id);
+  indices.forEach(gIdx => {
+    const vraag = vragen[gIdx];
+    if (!vraag) return;
+    let vac = typeof vraag === 'object' && vraag.vacatures ? vraag.vacatures : 'alle';
+    if (vac === 'alle') vac = alleVacIds.filter(id => id !== jobId);
+    if (!Array.isArray(vac)) vac = [];
+    if (!vac.includes(jobId)) vac.push(jobId);
+    vragen[gIdx] = { ...vraag, vacatures: vac };
+  });
+  saveExtraVragen(vragen);
+  document.getElementById(pickerId).style.display = 'none';
+  herrenderdropblock(jobId);
+}
+
+function ontkoppelVraagVanVacature(globaleIdx, jobId) {
+  const vragen = getExtraVragen();
+  const vraag = vragen[globaleIdx];
+  if (!vraag) return;
+  let vac = typeof vraag === 'object' && vraag.vacatures ? vraag.vacatures : 'alle';
+  const alleVacIds = getVacatures().map(v => v.id);
+  if (vac === 'alle') vac = alleVacIds.slice();
+  if (!Array.isArray(vac)) vac = alleVacIds.slice();
+  vac = vac.filter(id => id !== jobId);
+  vragen[globaleIdx] = { ...vraag, vacatures: vac };
+  saveExtraVragen(vragen);
+  herrenderdropblock(jobId);
+}
+
+function herrenderdropblock(jobId) {
+  const dropId = ('vdrop-' + jobId).replace(/[^a-zA-Z0-9\-_]/g, '_');
+  const dropEl = document.getElementById(dropId);
+  if (!dropEl) return;
+  const vacatures = getVacatures();
+  const alleVragen = getExtraVragen();
+  const job = vacatures.find(v => v.id === jobId);
+  if (job) {
+    const nieuweVragen = getVragenVoorVacature(jobId);
+    dropEl.innerHTML = bouwVraagRijen(job, nieuweVragen, vacatures, alleVragen);
+    const tellerEl = document.getElementById(dropId + '-teller');
+    if (tellerEl) tellerEl.textContent = nieuweVragen.length + ' vra' + (nieuweVragen.length === 1 ? 'ag' : 'gen');
+  }
+  renderDynamicJobs();
+}
+
+function toggleVacaturesBewerken() {
+  const inhoud = document.getElementById('vacatures-bewerken-inhoud');
+  const pijl = document.getElementById('vacatures-bewerken-pijl');
+  const open = inhoud.style.display === 'none';
+  inhoud.style.display = open ? 'block' : 'none';
+  pijl.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function toggleVragenBewerken() {
+  const inhoud = document.getElementById('vragen-bewerken-inhoud');
+  const pijl = document.getElementById('vragen-bewerken-pijl');
+  const open = inhoud.style.display === 'none';
+  inhoud.style.display = open ? 'block' : 'none';
+  pijl.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function renderVacatureKeuze() {
+  const vacatures = getVacatures();
+  const container = document.getElementById('vraag-vacature-keuze');
+  if (!container) return;
+  container.innerHTML = vacatures.map(job => `
+    <label style="display:flex; align-items:center; gap:5px; font-size:13px; cursor:pointer; margin-right:15px;">
+      <input type="checkbox" class="vac-keuze-check" value="${job.id}" checked style="width:auto; margin:0;"> ${job.titel}
+    </label>`).join('');
+}
+
+function voegVraagToe() {
+  const naam = document.getElementById('extra_vraag_naam').value.trim();
+  const voorwoord = document.getElementById('extra_vraag_voorwoord').value.trim();
+  const typeEl = document.querySelector('input[name="nv_type"]:checked');
+  const type = typeEl ? typeEl.value : 'tekst';
+  if (!naam) return;
+
+  let opties = [];
+  if (type === 'meerkeuze') {
+    opties = getMKOpties('nv-meerkeuze-opties');
+    if (opties.length < 2) { alert('Voeg minimaal 2 antwoordopties toe bij meerkeuze.'); return; }
+  }
+
+  const lijst = getExtraVragen();
+  lijst.push({ naam, voorwoord, verplicht: false, vacatures: [], type, opties });
+  saveExtraVragen(lijst);
+
+  document.getElementById('extra_vraag_naam').value = '';
+  document.getElementById('extra_vraag_voorwoord').value = '';
+  document.querySelector('input[name="nv_type"][value="tekst"]').checked = true;
+  toggleNVType('tekst');
+  document.getElementById('nv-meerkeuze-opties').innerHTML = `
+    <div class="meerkeuze-optie"><input type="text" placeholder="Optie 1 (bijv. Man)"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>
+    <div class="meerkeuze-optie"><input type="text" placeholder="Optie 2 (bijv. Vrouw)"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>
+    <div class="meerkeuze-optie"><input type="text" placeholder="Optie 3 (bijv. Anders)"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>`;
+
+  renderVraagEditLijst();
+  renderAdminVragenPerVacature();
+}
+
+// ============================================================
+// ADMIN RENDER SOLLICITATIES
+// ============================================================
+function renderAdminSollicitaties() {
+  const sollicitaties = getSollicitaties();
+  const container = document.getElementById('admin-sollicitatie-lijst');
+  if (!container) return;
+  if (sollicitaties.length === 0) {
+    container.innerHTML = '<p class="leeg-melding">Nog geen sollicitaties ontvangen.</p>';
+    return;
+  }
+  container.innerHTML = sollicitaties.map((s, idx) => {
+    // Sorteer antwoorden op volgorde van de vragen zoals ze zijn aangemaakt
+    const vragenVolgorde = getExtraVragen().map(v => typeof v === 'object' ? v.naam : v);
+    const alleEntries = s.extra ? Object.entries(s.extra) : [];
+    const entries = alleEntries.slice().sort((a, b) => {
+      const iA = vragenVolgorde.indexOf(a[0]);
+      const iB = vragenVolgorde.indexOf(b[0]);
+      if (iA === -1 && iB === -1) return 0;
+      if (iA === -1) return 1;
+      if (iB === -1) return -1;
+      return iA - iB;
+    });
+    const eersteVeld = entries[0];
+    const previewTekst = eersteVeld ? `${eersteVeld[0]}: ${eersteVeld[1] || '—'}` : 'Geen velden ingevuld';
+    const bestanden = s.bestanden || {};
+    const alleVeldenHtml = entries.map(([vraag, antwoord]) => {
+      const bestand = bestanden[vraag];
+      if (bestand && bestand.data) {
+        return `<div class="soll-field"><strong>${vraag}:</strong><span><a href="${bestand.data}" download="${bestand.naam}" style="display:inline-flex;align-items:center;gap:6px;background:#000;color:#fff;padding:5px 12px;border-radius:4px;font-size:12px;text-decoration:none;font-weight:700;">&#8595; ${bestand.naam}</a></span></div>`;
+      }
+      return `<div class="soll-field"><strong>${vraag}:</strong><span>${antwoord || '<em style="color:#aaa;">niet ingevuld</em>'}</span></div>`;
+    }).join('');
+    return `
+    <div class="soll-card">
+      <div class="soll-card-header" onclick="toggleSoll(${s.id})">
+        <div class="soll-card-header-left">
+          <div class="soll-card-title">&#128196; ${s.functie}</div>
+          <div class="soll-card-preview">${previewTekst}</div>
+        </div>
+        <div class="soll-card-meta">${s.datum}</div>
+        <button class="soll-expand-btn" id="soll-btn-${s.id}">&#9660;</button>
+      </div>
+      <div class="soll-card-body" id="soll-body-${s.id}">
+        <div class="soll-card-body-inner">
+          ${alleVeldenHtml || '<p style="color:#aaa; font-size:13px; font-style:italic;">Geen extra velden.</p>'}
+          <div style="margin-top:12px; border-top:1px solid #eee; padding-top:10px;">
+            <button class="btn-delete" style="padding:6px 14px; font-size:12px;" onclick="verwijderSollicitatie(${s.id})">Sollicitatie verwijderen</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleSoll(id) {
+  const body = document.getElementById(`soll-body-${id}`);
+  const btn = document.getElementById(`soll-btn-${id}`);
+  body.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+function renderAdminVragenPerVacature() {
+  const vacatures = getVacatures();
+  const alleVragen = getExtraVragen();
+  const container = document.getElementById('admin-vragen-per-vacature');
+  if (!container) return;
+  if (vacatures.length === 0) {
+    container.innerHTML = '<p style="color:#666; font-style:italic; padding:10px 0;">Maak eerst vacatures aan.</p>';
+    return;
+  }
+  container.innerHTML = vacatures.map(job => {
+    const vragen = getVragenVoorVacature(job.id);
+    const dropId = ('vdrop-' + job.id).replace(/[^a-zA-Z0-9\-_]/g, '_');
+    return `
+    <div style="margin-bottom:10px; border:1px solid #ddd; border-radius:5px; overflow:hidden;">
+      <div onclick="toggleVacDrop('${dropId}')" style="display:flex; align-items:center; justify-content:space-between; padding:12px 15px; background:#f0f0f0; cursor:pointer; user-select:none;">
+        <span style="font-weight:700; font-size:14px;">${job.titel}</span>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span id="${dropId}-teller" style="font-size:12px; color:#666;">${vragen.length} vra${vragen.length === 1 ? 'ag' : 'gen'}</span>
+          <span id="${dropId}-chevron" style="font-size:12px; transition:transform 0.2s;">▼</span>
+        </div>
+      </div>
+      <div id="${dropId}" style="display:none;">${bouwVraagRijen(job, vragen, vacatures, alleVragen)}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleVacDrop(id) {
+  const el = document.getElementById(id);
+  const ch = document.getElementById(id + '-chevron');
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  if (ch) ch.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+// ============================================================
+// DYNAMISCHE VACATURES RENDEREN (publieke kant)
+// ============================================================
+function renderDynamicJobs() {
+  const btnCont = document.getElementById('dynamic-job-buttons');
+  const contentCont = document.getElementById('dynamic-job-contents');
+  const v = getVacatures();
+  const onlineVacatures = v.filter(job => job.online !== false);
+  if (onlineVacatures.length === 0) {
+    btnCont.innerHTML = "<p style='color:#fff; font-size:13px; font-weight:300; opacity:0.6; padding:10px 0; line-height:1.6;'>Er zijn momenteel geen openstaande vacatures.<br>Kijk later nog eens terug.</p>";
+    contentCont.innerHTML = '';
+    return;
+  }
+  btnCont.innerHTML = onlineVacatures.map(job => `
+    <button class="job-button nav-link" style="width:100%; display:block;" onclick="openJobPage('${job.id}')">${job.titel}</button>`).join('');
+  contentCont.innerHTML = onlineVacatures.map(job => {
+    const vragenVoorJob = getVragenVoorVacature(job.id);
+    const vragenHtml = vragenVoorJob.map(vraag => {
+      const naam = typeof vraag === 'object' ? vraag.naam : vraag;
+      const voorwoord = typeof vraag === 'object' ? (vraag.voorwoord || '') : '';
+      const verplicht = typeof vraag === 'object' ? vraag.verplicht : false;
+      const type = typeof vraag === 'object' ? (vraag.type || 'tekst') : 'tekst';
+      const opties = typeof vraag === 'object' ? (vraag.opties || []) : [];
+      const labelHtml = `<label style="display:block; font-size:13px; font-weight:600; margin-bottom:5px; color:#333;">${naam}${verplicht ? ' <span style="color:#c0392b;">*</span>' : ''}</label>`;
+
+      let inputHtml = '';
+      if (type === 'meerkeuze' && opties.length > 0) {
+        inputHtml = `<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
+          ${opties.map((opt, oi) => `
+            <label style="display:flex; align-items:center; gap:6px; font-size:13px; cursor:pointer; padding:7px 14px; border:1px solid #ccc; border-radius:20px; background:#fff; transition:all 0.15s; user-select:none;" class="mk-opt-lbl-${job.id}-${naam.replace(/\s/g,'')}">
+              <input type="radio" name="mk_${job.id}_${naam.replace(/\s/g,'_')}" class="extra-veld-${job.id}" data-vraag="${naam}" data-verplicht="${verplicht}" value="${opt.replace(/"/g,'&quot;')}" style="display:none;" onchange="updateMKStyle(this, '.mk-opt-lbl-${job.id}-${naam.replace(/\s/g,'')}')">
+              <span>${opt}</span>
+            </label>`).join('')}
+        </div>`;
+      } else if (type === 'upload') {
+        inputHtml = `<div style="margin-top:4px;">
+          <label style="display:inline-flex; align-items:center; gap:8px; padding:9px 16px; background:#000; color:#fff; border-radius:4px; cursor:pointer; font-size:13px; font-weight:600;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+            Bestand uploaden
+            <input type="file" class="extra-veld-${job.id}" data-vraag="${naam}" data-verplicht="${verplicht}" data-type="upload" style="display:none;" onchange="updateUploadLabel(this)">
+          </label>
+          <span class="upload-naam-${job.id}-${naam.replace(/\s/g,'')}" style="font-size:12px; color:#666; margin-left:10px;"></span>
+        </div>`;
+      } else {
+        inputHtml = `<input type="text" class="extra-veld-${job.id}" data-vraag="${naam}" data-verplicht="${verplicht}" placeholder="${voorwoord}" style="width:100%; padding:12px; border:1px solid #ccc; box-sizing:border-box; border-radius:3px;">`;
+      }
+      return `<div style="margin-bottom:16px;">${labelHtml}${inputHtml}</div>`;
+    }).join('');
+    return `
+    <div id="${job.id}" class="job-content" style="display:none; flex-direction:column;">
+      <h2>${job.titel}</h2>
+      <div style="margin-bottom:30px; line-height:1.6;">${job.tekst}</div>
+      <div class="inline-soll-form" style="background:#f0f0f0; padding:25px; border-radius:4px; border:1px solid #ddd;">
+        <h3 style="margin-top:0;">Direct solliciteren</h3>
+        ${vragenHtml || '<p style="color:#888; font-style:italic; font-size:13px;">Geen vragen ingesteld voor deze vacature.</p>'}
+        <button class="job-button" style="background:#000; width:100%; text-align:center; margin-top:8px;" onclick="verstuurSollicitatie('${job.id}', '${job.titel}')">Verstuur Sollicitatie</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateMKStyle(radio, groupClass) {
+  document.querySelectorAll(groupClass).forEach(lbl => {
+    lbl.style.background = '#fff';
+    lbl.style.borderColor = '#ccc';
+    lbl.style.color = '#000';
+    const sp = lbl.querySelector('span');
+    if (sp) sp.style.color = '#000';
+  });
+  const parent = radio.closest('label');
+  if (parent) {
+    parent.style.background = '#000';
+    parent.style.borderColor = '#000';
+    parent.style.color = '#fff';
+    const sp = parent.querySelector('span');
+    if (sp) sp.style.color = '#fff';
+  }
+}
+
+function updateUploadLabel(input) {
+  const vraag = input.getAttribute('data-vraag');
+  const jobId = input.closest('[class*="inline-soll-form"]') ? input.closest('.job-content').id : '';
+  const span = document.querySelector('.upload-naam-' + jobId + '-' + vraag.replace(/\s/g,''));
+  if (span && input.files[0]) span.textContent = '📎 ' + input.files[0].name;
+}
+
+// ============================================================
+// SOLLICITATIES
+// ============================================================
+function verwijderSollicitatie(id) {
+  toonConfirm('Sollicitatie verwijderen?', 'Weet u zeker dat u deze sollicitatie wilt verwijderen?', 'Ja, verwijderen', () => {
+    let s = getSollicitaties().filter(x => x.id !== id);
+    saveSollicitaties(s);
+    renderAdminSollicitaties();
+  });
+}
+
+function verstuurSollicitatie(jobId, jobTitel) {
+  const extraVelden = document.querySelectorAll(`.extra-veld-${jobId}`);
+  for (const input of extraVelden) {
+    const verplicht = input.getAttribute('data-verplicht') === 'true';
+    if (!verplicht) continue;
+    const type = input.type;
+    if (type === 'radio') {
+      const name = input.name;
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      if (!checked) {
+        alert(`Het veld "${input.getAttribute('data-vraag')}" is verplicht.`);
+        return;
+      }
+    } else if (type === 'file') {
+      if (!input.files || input.files.length === 0) {
+        alert(`Upload een bestand voor "${input.getAttribute('data-vraag')}".`);
+        return;
+      }
+    } else {
+      if (!input.value.trim()) {
+        input.style.borderColor = '#c0392b';
+        input.focus();
+        alert(`Het veld "${input.getAttribute('data-vraag')}" is verplicht.`);
+        return;
+      }
+    }
+    if (input.type === 'text') input.style.borderColor = '#ccc';
+  }
+
+  toonConfirm(
+    'Sollicitatie versturen?',
+    `Weet u zeker dat u uw sollicitatie voor "${jobTitel}" wilt versturen?`,
+    'Ja, versturen',
+    () => {
+      const extraData = {};
+      const extraFiles = {};
+      const seen = new Set();
+      const fileInputs = [];
+
+      document.querySelectorAll(`.extra-veld-${jobId}`).forEach(input => {
+        const vraag = input.getAttribute('data-vraag');
+        if (seen.has(vraag)) return;
+        if (input.type === 'radio') {
+          const checked = document.querySelector(`input[name="${input.name}"]:checked`);
+          extraData[vraag] = checked ? checked.value : '';
+          seen.add(vraag);
+        } else if (input.type === 'file') {
+          extraData[vraag] = input.files[0] ? input.files[0].name : '';
+          if (input.files[0]) fileInputs.push({ vraag, file: input.files[0] });
+          seen.add(vraag);
+        } else {
+          extraData[vraag] = input.value;
+          seen.add(vraag);
+        }
+      });
+
+      if (fileInputs.length === 0) {
+        const s = getSollicitaties();
+        s.push({ id: Date.now(), functie: jobTitel, extra: extraData, bestanden: {}, datum: new Date().toLocaleString() });
+        saveSollicitaties(s);
+        alert('Bedankt! Uw sollicitatie voor ' + jobTitel + ' is succesvol opgeslagen.');
+        goHome();
+        return;
+      }
+
+      let geladen = 0;
+      fileInputs.forEach(({ vraag, file }) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          extraFiles[vraag] = { naam: file.name, type: file.type, data: e.target.result };
+          geladen++;
+          if (geladen === fileInputs.length) {
+            const s = getSollicitaties();
+            s.push({ id: Date.now(), functie: jobTitel, extra: extraData, bestanden: extraFiles, datum: new Date().toLocaleString() });
+            saveSollicitaties(s);
+            alert('Bedankt! Uw sollicitatie voor ' + jobTitel + ' is succesvol opgeslagen.');
+            goHome();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  );
+}
+
+// ============================================================
+// DRAG & DROP — vragen per vacature
+// ============================================================
+let vqDragSrcNaam = null, vqDragSrcJob = null;
+
+function vqDragStart(e) {
+  const el = e.currentTarget;
+  vqDragSrcNaam = el.getAttribute('data-naam');
+  vqDragSrcJob = el.getAttribute('data-job');
+  setTimeout(() => { el.style.opacity = '0.4'; }, 0);
+  e.dataTransfer.effectAllowed = 'move';
+}
+function vqDragOver(e) {
+  e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+  const el = e.currentTarget;
+  const rect = el.getBoundingClientRect();
+  const isTop = e.clientY < rect.top + rect.height / 2;
+  document.querySelectorAll('[data-job]').forEach(el => { el.style.borderTop = ''; el.style.borderBottom = ''; });
+  if (isTop) el.style.borderTop = '3px solid #000';
+  else el.style.borderBottom = '3px solid #000';
+}
+function vqDragEnd(e) {
+  e.currentTarget.style.opacity = '';
+  document.querySelectorAll('[data-job]').forEach(el => { el.style.borderTop = ''; el.style.borderBottom = ''; });
+}
+function vqDrop(e) {
+  e.preventDefault();
+  document.querySelectorAll('[data-job]').forEach(el => { el.style.borderTop = ''; el.style.borderBottom = ''; });
+  const target = e.currentTarget;
+  const targetNaam = target.getAttribute('data-naam');
+  const jobId = target.getAttribute('data-job');
+  if (!vqDragSrcNaam || vqDragSrcNaam === targetNaam || vqDragSrcJob !== jobId) return;
+  const rect = target.getBoundingClientRect();
+  const insertBefore = e.clientY < rect.top + rect.height / 2;
+  const vragen = getVragenVoorVacature(jobId);
+  const namen = vragen.map(v => typeof v === 'object' ? v.naam : v);
+  const fromIdx = namen.indexOf(vqDragSrcNaam);
+  let toIdx = namen.indexOf(targetNaam);
+  if (fromIdx === -1 || toIdx === -1) return;
+  namen.splice(fromIdx, 1);
+  toIdx = namen.indexOf(targetNaam);
+  if (!insertBefore) toIdx += 1;
+  namen.splice(toIdx, 0, vqDragSrcNaam);
+  const volgorde = getVraagVolgorde();
+  volgorde[jobId] = namen;
+  localStorage.setItem('vw_vraag_volgorde', JSON.stringify(volgorde));
+  herrenderdropblock(jobId);
+  renderDynamicJobs();
+}
+
+// ============================================================
+// DRAG & DROP — globale vragenlijst
+// ============================================================
+let gvDragSrcIdx = null;
+
+function gvDragStart(e) {
+  const el = e.currentTarget;
+  gvDragSrcIdx = parseInt(el.getAttribute('data-global-idx'), 10);
+  setTimeout(() => { el.style.opacity = '0.4'; }, 0);
+  e.dataTransfer.effectAllowed = 'move';
+}
+function gvDragOver(e) {
+  e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+  const el = e.currentTarget;
+  const rect = el.getBoundingClientRect();
+  const isTop = e.clientY < rect.top + rect.height / 2;
+  document.querySelectorAll('.vraag-edit-card').forEach(el => { el.style.borderTop = ''; el.style.borderBottom = ''; });
+  if (isTop) el.style.borderTop = '3px solid #000';
+  else el.style.borderBottom = '3px solid #000';
+}
+function gvDragEnd(e) {
+  e.currentTarget.style.opacity = '';
+  document.querySelectorAll('.vraag-edit-card').forEach(el => { el.style.borderTop = ''; el.style.borderBottom = ''; });
+}
+function gvDrop(e) {
+  e.preventDefault();
+  document.querySelectorAll('.vraag-edit-card').forEach(el => { el.style.borderTop = ''; el.style.borderBottom = ''; });
+  const target = e.currentTarget;
+  const rect = target.getBoundingClientRect();
+  const insertBefore = e.clientY < rect.top + rect.height / 2;
+  let toIdx = parseInt(target.getAttribute('data-global-idx'), 10);
+  if (gvDragSrcIdx === null || gvDragSrcIdx === toIdx) return;
+  const vragen = getExtraVragen();
+  const [moved] = vragen.splice(gvDragSrcIdx, 1);
+  if (!insertBefore && toIdx > gvDragSrcIdx) toIdx -= 1;
+  vragen.splice(insertBefore ? toIdx : toIdx + 1, 0, moved);
+  saveExtraVragen(vragen);
+  renderVraagEditLijst();
+  renderAdminVragenPerVacature();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.getElementById('loginOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeLogin();
+});
+document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+  if (e.target === this) confirmAntwoord(false);
+});
+
+renderDynamicJobs();
+</script>
 </body>
 </html>
