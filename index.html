@@ -113,12 +113,16 @@ body {
 .header {
   position: fixed; top: 0; width: 100%;
   height: var(--header-height);
-  background: var(--kleur-header-achtergrond);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255,255,255,1);
   display: flex; align-items: center; justify-content: center;
   border-bottom: 1px solid var(--kleur-header-rand);
   z-index: 1000;
+}
+.header.menu-open {
+  background: rgba(255,255,255,1);
+}
+.header::after {
+  display: none;
 }
 
 .menu-btn {
@@ -145,10 +149,13 @@ body {
 .admin-trigger { display: none !important; }
 
 .nav-menu {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  z-index: 5000; pointer-events: none; visibility: hidden;
+  position: fixed; top: var(--header-height); left: 0; width: 100%;
+  height: calc(100% - var(--header-height));
+  z-index: 999; pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0s linear 0.45s;
 }
-.nav-menu.open { pointer-events: all; visibility: visible; }
+.nav-menu.open { pointer-events: all; visibility: visible; transition-delay: 0s; }
 .nav-menu-panel {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   background: #fff; color: var(--kleur-zwart);
@@ -158,9 +165,7 @@ body {
 }
 .nav-menu.open .nav-menu-panel { transform: translateY(0); }
 .nav-menu-topbar {
-  display: flex; align-items: center;
-  height: var(--header-height); padding: 0 5%;
-  flex-shrink: 0; border-bottom: 1px solid var(--kleur-nav-rand); position: relative;
+  display: none;
 }
 .nav-menu-sluit-btn {
   background: none; border: none; cursor: pointer; padding: 10px;
@@ -265,12 +270,13 @@ body {
   border: 1px solid var(--kleur-knop-rand); backdrop-filter: blur(5px);
   transition: all 0.3s ease; text-align: left; display: block;
   box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;
-  box-sizing: border-box; font-family: "Montserrat", Arial, sans-serif;
+  box-sizing: border-box; font-family: "Montserrat", Arial, sans-serif; font-weight: 400;
 }
 .job-button:hover, .back-btn:hover {
   background: #fff; color: var(--kleur-zwart); transform: translateX(10px);
   box-shadow: 0 6px 20px rgba(0,0,0,0.4);
 }
+.job-button.wit-tekst:hover { color: #fff; background: #222; }
 .back-btn { display: none; }
 
 h2 { margin: 0 0 15px 0; font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 700; color: var(--kleur-zwart); }
@@ -742,7 +748,13 @@ li { margin-bottom: 8px; }
     <h3>Verwelius Beheer</h3>
     <p>Log in om het beheerpaneel te openen.</p>
     <input type="text" id="login-gebruiker" placeholder="Gebruikersnaam" autocomplete="username">
-    <input type="password" id="login-ww" placeholder="Wachtwoord" autocomplete="current-password" onkeydown="if(event.key==='Enter') probeerLogin()">
+    <div style="position:relative; display:flex; align-items:center;">
+      <input type="password" id="login-ww" placeholder="Wachtwoord" autocomplete="current-password" onkeydown="if(event.key==='Enter') probeerLogin()" style="width:100%; padding-right:40px; box-sizing:border-box;">
+      <button type="button" onclick="toggleWachtwoord()" id="toon-ww-btn" style="position:absolute; right:10px; background:none; border:none; cursor:pointer; padding:0; color:#888; font-size:13px; line-height:1;" title="Wachtwoord tonen">
+        <svg id="oog-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg id="oog-dicht" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      </button>
+    </div>
     <span class="login-fout" id="login-fout"></span>
     <button class="job-button" style="background:#000; display:block; width:100%; text-align:center;" onclick="probeerLogin()">Inloggen</button>
   </div>
@@ -850,6 +862,10 @@ li { margin-bottom: 8px; }
           <div class="meerkeuze-optie"><input type="text" placeholder="Optie 3 (bijv. Anders)"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>
         </div>
         <button class="btn-optie-add" onclick="voegMKOptieToef('nv-meerkeuze-opties')">+ Optie toevoegen</button>
+        <div style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+          <label class="toggle-switch" style="flex-shrink:0;"><input type="checkbox" id="nv-anders-optie"><span class="toggle-slider"></span></label>
+          <span style="font-size:12px; color:#444;">"Anders…" knop toevoegen (laat invulveld zien)</span>
+        </div>
       </div>
 
       <button class="job-button" style="background:#000; white-space:nowrap; display:inline-block; width:auto;" onclick="voegVraagToe()">Veld Toevoegen</button>
@@ -941,13 +957,31 @@ function goHome() {
 // ============================================================
 function openNavMenu() {
   document.getElementById('navMenu').classList.add('open');
+  document.querySelector('.header').classList.add('menu-open');
+  document.getElementById('menuBtn').onclick = closeNavMenu;
   animeerChevron('2,2 11,12 20,2', '2,12 11,2 20,12');
   document.body.style.overflow = 'hidden';
 }
 function closeNavMenu() {
   document.getElementById('navMenu').classList.remove('open');
+  document.querySelector('.header').classList.remove('menu-open');
+  document.getElementById('menuBtn').onclick = openNavMenu;
   animeerChevron('2,12 11,2 20,12', '2,2 11,12 20,2');
   document.body.style.overflow = 'auto';
+}
+function toggleWachtwoord() {
+  const input = document.getElementById('login-ww');
+  const oogOpen = document.getElementById('oog-open');
+  const oogDicht = document.getElementById('oog-dicht');
+  if (input.type === 'password') {
+    input.type = 'text';
+    oogOpen.style.display = 'none';
+    oogDicht.style.display = 'block';
+  } else {
+    input.type = 'password';
+    oogOpen.style.display = 'block';
+    oogDicht.style.display = 'none';
+  }
 }
 
 // ============================================================
@@ -1282,7 +1316,11 @@ function renderVraagEditLijst() {
           ${opties.map((o,oi) => `<div class="meerkeuze-optie"><input type="text" value="${o.replace(/"/g,'&quot;')}"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>`).join('')}
           ${opties.length === 0 ? '<div class="meerkeuze-optie"><input type="text" placeholder="Optie 1"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>' : ''}
         </div>
-        <button class="btn-optie-add" onclick="voegMKOptieToef('vedit-mk-${idx}')">+ Optie toevoegen</button>` : ''}
+        <button class="btn-optie-add" onclick="voegMKOptieToef('vedit-mk-${idx}')">+ Optie toevoegen</button>
+        <div style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+          <label class="toggle-switch" style="flex-shrink:0;"><input type="checkbox" id="vedit-anders-${idx}" ${vraag.andersOptie ? 'checked' : ''}><span class="toggle-slider"></span></label>
+          <span style="font-size:12px; color:#444;">"Anders…" knop toevoegen (laat invulveld zien)</span>
+        </div>` : ''}
         <div class="vraag-edit-acties">
           <button class="btn-opslaan" onclick="slaVraagOpMetIdx(${idx})">Opslaan</button>
           <button class="btn-annuleer" onclick="toggleVraagEditPanel(${idx})">Annuleren</button>
@@ -1318,7 +1356,9 @@ function slaVraagOpMetIdx(idx) {
     nieuweOpties = getMKOpties('vedit-mk-' + idx);
   }
 
-  vragen[idx] = { ...vragen[idx], naam: nieuwNaam, voorwoord: nieuwVw.trim(), verplicht: nieuwVerplicht, opties: nieuweOpties };
+  const andersOptieEl = document.getElementById('vedit-anders-' + idx);
+  const andersOptie = type === 'meerkeuze' && andersOptieEl ? andersOptieEl.checked : false;
+  vragen[idx] = { ...vragen[idx], naam: nieuwNaam, voorwoord: nieuwVw.trim(), verplicht: nieuwVerplicht, opties: nieuweOpties, andersOptie };
   saveExtraVragen(vragen);
   renderVraagEditLijst();
   renderAdminVragenPerVacature();
@@ -1369,6 +1409,19 @@ function getVragenVoorVacature(jobId) {
   return vragenVoorJob;
 }
 
+function getVerplichtPerVacature() { try { return JSON.parse(localStorage.getItem('vw_verplicht_per_vac') || '{}'); } catch(e) { return {}; } }
+function saveVerplichtPerVacature(obj) { localStorage.setItem('vw_verplicht_per_vac', JSON.stringify(obj)); }
+function toggleVerplichtVoorVacature(jobId, vraagNaam, btn) {
+  const obj = getVerplichtPerVacature();
+  if (!obj[jobId]) obj[jobId] = {};
+  obj[jobId][vraagNaam] = !obj[jobId][vraagNaam];
+  saveVerplichtPerVacature(obj);
+  const isVerplicht = obj[jobId][vraagNaam];
+  btn.textContent = isVerplicht ? '★ Verplicht' : '☆ Verplicht';
+  btn.style.background = isVerplicht ? '#c0392b' : '#888';
+  renderDynamicJobs();
+}
+
 function bouwVraagRijen(job, vragen, vacatures, alleVragen) {
   const encodedJobId = job.id.replace(/"/g, '&quot;');
   const rijen = vragen.length === 0
@@ -1383,6 +1436,9 @@ function bouwVraagRijen(job, vragen, vacatures, alleVragen) {
         const typeBadgeClass = type === 'meerkeuze' ? 'type-meerkeuze' : type === 'upload' ? 'type-upload' : 'type-tekst';
         const typeTekst = type === 'meerkeuze' ? 'Meerkeuze' : type === 'upload' ? 'Upload' : 'Tekst';
 
+        const verplichtPerVac = getVerplichtPerVacature();
+        const isVerplicht = verplichtPerVac[job.id] && verplichtPerVac[job.id][naam] ? true : false;
+
         return `
         <div draggable="true" data-job="${encodedJobId}" data-naam="${encodedNaam}"
           ondragstart="vqDragStart(event)" ondragover="vqDragOver(event)" ondrop="vqDrop(event)" ondragend="vqDragEnd(event)"
@@ -1394,9 +1450,11 @@ function bouwVraagRijen(job, vragen, vacatures, alleVragen) {
           <div style="flex:1; min-width:0;">
             <span style="font-size:13px; font-weight:700;">${naam}</span>
             <span class="type-badge ${typeBadgeClass}" style="font-size:10px; padding:1px 5px;">${typeTekst}</span>
-            ${verplicht ? '<span style="font-size:11px; color:#c0392b; margin-left:4px;">(verplicht)</span>' : ''}
+            ${isVerplicht ? '<span style="font-size:11px; color:#c0392b; margin-left:4px;">(verplicht)</span>' : ''}
             ${voorwoord ? `<div style="font-size:11px; color:#777; margin-top:1px;">${voorwoord}</div>` : ''}
           </div>
+          <button onclick="toggleVerplichtVoorVacature('${encodedJobId}', '${encodedNaam}', this)"
+            style="font-size:11px; padding:3px 9px; background:${isVerplicht ? '#c0392b' : '#888'}; color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:inherit; flex-shrink:0;">${isVerplicht ? '★ Verplicht' : '☆ Verplicht'}</button>
           <button onclick="ontkoppelVraagVanVacature(${globaleIdx}, '${encodedJobId}')"
             style="font-size:11px; padding:3px 9px; background:#c0392b; color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:inherit; flex-shrink:0;">✕ Verwijderen</button>
         </div>`;
@@ -1580,13 +1638,15 @@ function voegVraagToe() {
     if (opties.length < 2) { alert('Voeg minimaal 2 antwoordopties toe bij meerkeuze.'); return; }
   }
 
+  const andersOptie = type === 'meerkeuze' && document.getElementById('nv-anders-optie').checked;
   const lijst = getExtraVragen();
-  lijst.push({ naam, voorwoord, verplicht: false, vacatures: [], type, opties });
+  lijst.push({ naam, voorwoord, verplicht: false, vacatures: [], type, opties, andersOptie });
   saveExtraVragen(lijst);
 
   document.getElementById('extra_vraag_naam').value = '';
   document.getElementById('extra_vraag_voorwoord').value = '';
   document.querySelector('input[name="nv_type"][value="tekst"]').checked = true;
+  document.getElementById('nv-anders-optie').checked = false;
   toggleNVType('tekst');
   document.getElementById('nv-meerkeuze-opties').innerHTML = `
     <div class="meerkeuze-optie"><input type="text" placeholder="Optie 1 (bijv. Man)"><button class="btn-optie-verwijder" onclick="verwijderMKOptie(this)">×</button></div>
@@ -1714,19 +1774,35 @@ function renderDynamicJobs() {
     const vragenHtml = vragenVoorJob.map(vraag => {
       const naam = typeof vraag === 'object' ? vraag.naam : vraag;
       const voorwoord = typeof vraag === 'object' ? (vraag.voorwoord || '') : '';
-      const verplicht = typeof vraag === 'object' ? vraag.verplicht : false;
+      const verplichtPerVac = getVerplichtPerVacature();
+      const verplicht = (verplichtPerVac[job.id] && verplichtPerVac[job.id][naam]) ? true : (typeof vraag === 'object' ? vraag.verplicht : false);
       const type = typeof vraag === 'object' ? (vraag.type || 'tekst') : 'tekst';
       const opties = typeof vraag === 'object' ? (vraag.opties || []) : [];
       const labelHtml = `<label style="display:block; font-size:13px; font-weight:600; margin-bottom:5px; color:#333;">${naam}${verplicht ? ' <span style="color:#c0392b;">*</span>' : ''}</label>`;
 
+      const andersOptie = typeof vraag === 'object' ? (vraag.andersOptie || false) : false;
+
       let inputHtml = '';
       if (type === 'meerkeuze' && opties.length > 0) {
+        const andersId = `anders_${job.id}_${naam.replace(/\s/g,'_')}`;
+        const radioNaam = `mk_${job.id}_${naam.replace(/\s/g,'_')}`;
         inputHtml = `<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
           ${opties.map((opt, oi) => `
             <label style="display:flex; align-items:center; gap:6px; font-size:13px; cursor:pointer; padding:7px 14px; border:1px solid #ccc; border-radius:20px; background:#fff; transition:all 0.15s; user-select:none;" class="mk-opt-lbl-${job.id}-${naam.replace(/\s/g,'')}">
-              <input type="radio" name="mk_${job.id}_${naam.replace(/\s/g,'_')}" class="extra-veld-${job.id}" data-vraag="${naam}" data-verplicht="${verplicht}" value="${opt.replace(/"/g,'&quot;')}" style="display:none;" onchange="updateMKStyle(this, '.mk-opt-lbl-${job.id}-${naam.replace(/\s/g,'')}')">
+              <input type="radio" name="${radioNaam}" class="extra-veld-${job.id}" data-vraag="${naam}" data-verplicht="${verplicht}" value="${opt.replace(/"/g,'&quot;')}" style="display:none;" onchange="updateMKStyle(this, '.mk-opt-lbl-${job.id}-${naam.replace(/\s/g,'')}'); document.getElementById('${andersId}-wrap').style.display='none'; var al=document.getElementById('${andersId}-lbl'); if(al){al.style.background='#fff'; al.style.borderColor='#ccc'; al.style.color='#000'; al.style.fontWeight='400';}">
               <span>${opt}</span>
             </label>`).join('')}
+          ${andersOptie ? `
+            <label id="${andersId}-lbl" style="display:flex; align-items:center; gap:6px; font-size:13px; cursor:pointer; padding:7px 14px; border:1px solid #ccc; border-radius:20px; background:#fff; color:#000; transition:all 0.15s; user-select:none;" onclick="
+              document.querySelectorAll('input[name=\\'${radioNaam}\\']').forEach(r => r.checked=false);
+              document.querySelectorAll('.mk-opt-lbl-${job.id}-${naam.replace(/\s/g,'')}').forEach(l => { l.style.background='#fff'; l.style.borderColor='#ccc'; l.style.color='#000'; l.style.fontWeight='400'; const sp=l.querySelector('span'); if(sp) sp.style.color='#000'; });
+              this.style.background='#000'; this.style.borderColor='#000'; this.style.color='#fff'; this.style.fontWeight='600';
+              document.getElementById('${andersId}-wrap').style.display='block';
+              document.getElementById('${andersId}-input').focus();
+            "><span style="color:inherit;">Anders…</span></label>
+            <div id="${andersId}-wrap" style="display:none; width:100%; margin-top:6px;">
+              <input type="text" id="${andersId}-input" class="extra-veld-${job.id}" data-vraag="${naam}" data-verplicht="${verplicht}" placeholder="Typ uw antwoord..." style="width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:4px; font-size:13px; box-sizing:border-box; font-family:'Montserrat',Arial,sans-serif;">
+            </div>` : ''}
         </div>`;
       } else if (type === 'upload') {
         inputHtml = `<div style="margin-top:4px;">
@@ -1749,7 +1825,7 @@ function renderDynamicJobs() {
       <div class="inline-soll-form" style="background:#f0f0f0; padding:25px; border-radius:4px; border:1px solid #ddd;">
         <h3 style="margin-top:0;">Direct solliciteren</h3>
         ${vragenHtml || '<p style="color:#888; font-style:italic; font-size:13px;">Geen vragen ingesteld voor deze vacature.</p>'}
-        <button class="job-button" style="background:#000; width:100%; text-align:center; margin-top:8px;" onclick="verstuurSollicitatie('${job.id}', '${job.titel}')">Verstuur Sollicitatie</button>
+        <button class="job-button wit-tekst" style="background:#000; color:#fff; width:100%; text-align:center; margin-top:8px;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#fff'" onclick="verstuurSollicitatie('${job.id}', '${job.titel}')">Verstuur Sollicitatie</button>
       </div>
     </div>`;
   }).join('');
@@ -1760,6 +1836,7 @@ function updateMKStyle(radio, groupClass) {
     lbl.style.background = '#fff';
     lbl.style.borderColor = '#ccc';
     lbl.style.color = '#000';
+    lbl.style.fontWeight = '400';
     const sp = lbl.querySelector('span');
     if (sp) sp.style.color = '#000';
   });
@@ -1768,6 +1845,7 @@ function updateMKStyle(radio, groupClass) {
     parent.style.background = '#000';
     parent.style.borderColor = '#000';
     parent.style.color = '#fff';
+    parent.style.fontWeight = '600';
     const sp = parent.querySelector('span');
     if (sp) sp.style.color = '#fff';
   }
@@ -1792,32 +1870,44 @@ function verwijderSollicitatie(id) {
 }
 
 function verstuurSollicitatie(jobId, jobTitel) {
+  const verplichtPerVac = getVerplichtPerVacature();
+  const verplichtVoorJob = verplichtPerVac[jobId] || {};
   const extraVelden = document.querySelectorAll(`.extra-veld-${jobId}`);
+  const gecontroleerd = new Set();
   for (const input of extraVelden) {
-    const verplicht = input.getAttribute('data-verplicht') === 'true';
+    const vraagNaam = input.getAttribute('data-vraag');
+    if (gecontroleerd.has(vraagNaam)) continue;
+    const verplicht = verplichtVoorJob[vraagNaam] || input.getAttribute('data-verplicht') === 'true';
     if (!verplicht) continue;
     const type = input.type;
     if (type === 'radio') {
+      gecontroleerd.add(vraagNaam);
       const name = input.name;
       const checked = document.querySelector(`input[name="${name}"]:checked`);
-      if (!checked) {
-        alert(`Het veld "${input.getAttribute('data-vraag')}" is verplicht.`);
+      const andersId = `anders_${jobId}_${vraagNaam.replace(/\s/g,'_')}-input`;
+      const andersInput = document.getElementById(andersId);
+      const andersWrap = andersInput ? document.getElementById(`anders_${jobId}_${vraagNaam.replace(/\s/g,'_')}-wrap`) : null;
+      const andersIngevuld = andersInput && andersWrap && andersWrap.style.display !== 'none' && andersInput.value.trim();
+      if (!checked && !andersIngevuld) {
+        alert(`Het veld "${vraagNaam}" is verplicht.`);
         return;
       }
     } else if (type === 'file') {
+      gecontroleerd.add(vraagNaam);
       if (!input.files || input.files.length === 0) {
-        alert(`Upload een bestand voor "${input.getAttribute('data-vraag')}".`);
+        alert(`Upload een bestand voor "${vraagNaam}".`);
         return;
       }
     } else {
+      gecontroleerd.add(vraagNaam);
       if (!input.value.trim()) {
         input.style.borderColor = '#c0392b';
         input.focus();
-        alert(`Het veld "${input.getAttribute('data-vraag')}" is verplicht.`);
+        alert(`Het veld "${vraagNaam}" is verplicht.`);
         return;
       }
+      input.style.borderColor = '#ccc';
     }
-    if (input.type === 'text') input.style.borderColor = '#ccc';
   }
 
   toonConfirm(
@@ -1835,7 +1925,14 @@ function verstuurSollicitatie(jobId, jobTitel) {
         if (seen.has(vraag)) return;
         if (input.type === 'radio') {
           const checked = document.querySelector(`input[name="${input.name}"]:checked`);
-          extraData[vraag] = checked ? checked.value : '';
+          if (checked) {
+            extraData[vraag] = checked.value;
+          } else {
+            // Kijk of de anders-tekstveld zichtbaar is en ingevuld
+            const andersId = `anders_${jobId}_${vraag.replace(/\s/g,'_')}-input`;
+            const andersInput = document.getElementById(andersId);
+            extraData[vraag] = (andersInput && andersInput.value.trim()) ? 'Anders: ' + andersInput.value.trim() : '';
+          }
           seen.add(vraag);
         } else if (input.type === 'file') {
           extraData[vraag] = input.files[0] ? input.files[0].name : '';
