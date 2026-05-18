@@ -765,6 +765,19 @@ li { margin-bottom: 8px; }
   <div class="overlay-content">
     <button style="float:right; cursor:pointer; font-size:28px; background:none; border:none; line-height:1;" onclick="closeAdmin()">&times;</button>
     <h2 style="color:#000">Verwelius Beheer</h2>
+
+    <!-- OPSLAG: EXPORTEREN & IMPORTEREN -->
+    <div style="display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; align-items:center; padding:14px 16px; background:#f4f4f4; border-radius:6px; border:1px solid #ddd;">
+      <span style="font-size:13px; font-weight:700; color:#444; flex-shrink:0;">📁 Opslag delen:</span>
+      <button class="job-button" style="background:#2c7a2c; display:inline-block; width:auto; padding:10px 18px; font-size:13px;" onclick="exporteerOpslag()">⬇ Exporteer opslag.json</button>
+      <label class="job-button" style="background:#000; display:inline-block; width:auto; padding:10px 18px; font-size:13px; cursor:pointer; margin:0;">
+        ⬆ Importeer opslag.json
+        <input type="file" accept=".json" onchange="importeerOpslag(this)" style="display:none;">
+      </label>
+      <span style="font-size:12px; color:#888; flex:1; min-width:180px;">Wijzigingen worden automatisch opgeslagen naar GitHub.</span>
+      <span id="gh-sync-status" style="font-size:12px; font-weight:500; margin-left:auto; white-space:nowrap;"></span>
+    </div>
+
     <div class="admin-tabs">
       <button class="tab-btn active" onclick="showTab('vacatures-tab', this)">Vacatures Beheren</button>
       <button class="tab-btn" onclick="showTab('sollicitaties-tab', this)">Sollicitaties Inzien</button>
@@ -921,16 +934,140 @@ function editorCmd(cmd, val) {
 }
 
 // ============================================================
-// DATA STORAGE (localStorage)
+// GITHUB SYNC CONFIGURATIE
+// ============================================================
+const GH_USER  = 'foxd3veloper';
+const GH_REPO  = 'Project-site-O-O';
+const GH_TOKEN = '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';
+const GH_FILE  = 'opslag.json';
+const GH_API   = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
+
+let ghSyncBezig = false;
+let ghSyncWachtrij = false;
+
+function toonSyncStatus(status) {
+  let el = document.getElementById('gh-sync-status');
+  if (!el) return;
+  const iconen = { bezig: '🔄', ok: '✅', fout: '❌', wacht: '⏳' };
+  const teksten = { bezig: 'Opslaan naar GitHub...', ok: 'Opgeslagen op GitHub', fout: 'Fout bij opslaan', wacht: 'Wachten...' };
+  el.textContent = (iconen[status] || '') + ' ' + (teksten[status] || '');
+  el.style.color = status === 'fout' ? '#c0392b' : status === 'ok' ? '#1a5e2a' : '#444';
+  if (status === 'ok') setTimeout(() => { if (el) el.textContent = ''; }, 3000);
+}
+
+async function laadVanGitHub() {
+  try {
+    const r = await fetch(GH_API, {
+      headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' }
+    });
+    if (!r.ok) return;
+    const json = await r.json();
+    const data = JSON.parse(atob(json.content.replace(/\n/g, '')));
+    if (data.vw_vacatures      !== undefined) localStorage.setItem('vw_vacatures',      JSON.stringify(data.vw_vacatures));
+    if (data.vw_sollicitaties  !== undefined) localStorage.setItem('vw_sollicitaties',  JSON.stringify(data.vw_sollicitaties));
+    if (data.vw_extra_vragen   !== undefined) localStorage.setItem('vw_extra_vragen',   JSON.stringify(data.vw_extra_vragen));
+    if (data.vw_vraag_volgorde !== undefined) localStorage.setItem('vw_vraag_volgorde', JSON.stringify(data.vw_vraag_volgorde));
+    renderDynamicJobs();
+  } catch(e) { console.warn('GitHub laden mislukt, lokale data gebruikt.', e); }
+}
+
+async function slaOpNaarGitHub() {
+  if (ghSyncBezig) { ghSyncWachtrij = true; return; }
+  ghSyncBezig = true;
+  toonSyncStatus('bezig');
+  try {
+    let sha = null;
+    const check = await fetch(GH_API, {
+      headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' }
+    });
+    if (check.ok) { const j = await check.json(); sha = j.sha; }
+
+    const data = {
+      vw_vacatures:      JSON.parse(localStorage.getItem('vw_vacatures')      || '[]'),
+      vw_sollicitaties:  JSON.parse(localStorage.getItem('vw_sollicitaties')  || '[]'),
+      vw_extra_vragen:   JSON.parse(localStorage.getItem('vw_extra_vragen')   || '[]'),
+      vw_vraag_volgorde: JSON.parse(localStorage.getItem('vw_vraag_volgorde') || '{}'),
+      bijgewerkt: new Date().toLocaleString('nl-NL')
+    };
+    const inhoud = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const body = { message: 'Vacatures bijgewerkt via beheer', content: inhoud };
+    if (sha) body.sha = sha;
+
+    const r = await fetch(GH_API, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!r.ok) throw new Error('GitHub API fout: ' + r.status);
+    toonSyncStatus('ok');
+  } catch(e) {
+    console.error('GitHub sync fout:', e);
+    toonSyncStatus('fout');
+  } finally {
+    ghSyncBezig = false;
+    if (ghSyncWachtrij) { ghSyncWachtrij = false; slaOpNaarGitHub(); }
+  }
+}
+
+// ============================================================
+// DATA STORAGE (localStorage + GitHub sync)
 // ============================================================
 function getVacatures() { return JSON.parse(localStorage.getItem('vw_vacatures') || '[]'); }
-function saveVacatures(list) { localStorage.setItem('vw_vacatures', JSON.stringify(list)); }
+function saveVacatures(list) { localStorage.setItem('vw_vacatures', JSON.stringify(list)); slaOpNaarGitHub(); }
 function getSollicitaties() { return JSON.parse(localStorage.getItem('vw_sollicitaties') || '[]'); }
-function saveSollicitaties(list) { localStorage.setItem('vw_sollicitaties', JSON.stringify(list)); }
+function saveSollicitaties(list) { localStorage.setItem('vw_sollicitaties', JSON.stringify(list)); slaOpNaarGitHub(); }
 function getExtraVragen() { return JSON.parse(localStorage.getItem('vw_extra_vragen') || '[]'); }
-function saveExtraVragen(list) { localStorage.setItem('vw_extra_vragen', JSON.stringify(list)); renderDynamicJobs(); }
+function saveExtraVragen(list) { localStorage.setItem('vw_extra_vragen', JSON.stringify(list)); renderDynamicJobs(); slaOpNaarGitHub(); }
 function getVraagVolgorde() { return JSON.parse(localStorage.getItem('vw_vraag_volgorde') || '{}'); }
-function saveVraagVolgorde(obj) { localStorage.setItem('vw_vraag_volgorde', JSON.stringify(obj)); renderDynamicJobs(); }
+function saveVraagVolgorde(obj) { localStorage.setItem('vw_vraag_volgorde', JSON.stringify(obj)); renderDynamicJobs(); slaOpNaarGitHub(); }
+
+// ============================================================
+// OPSLAG EXPORTEREN & IMPORTEREN
+// ============================================================
+function exporteerOpslag() {
+  const data = {
+    vw_vacatures:      JSON.parse(localStorage.getItem('vw_vacatures')      || '[]'),
+    vw_sollicitaties:  JSON.parse(localStorage.getItem('vw_sollicitaties')  || '[]'),
+    vw_extra_vragen:   JSON.parse(localStorage.getItem('vw_extra_vragen')   || '[]'),
+    vw_vraag_volgorde: JSON.parse(localStorage.getItem('vw_vraag_volgorde') || '{}'),
+    exportDatum: new Date().toLocaleString('nl-NL')
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'opslag.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importeerOpslag(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.vw_vacatures !== undefined)      localStorage.setItem('vw_vacatures',      JSON.stringify(data.vw_vacatures));
+      if (data.vw_sollicitaties !== undefined)  localStorage.setItem('vw_sollicitaties',  JSON.stringify(data.vw_sollicitaties));
+      if (data.vw_extra_vragen !== undefined)   localStorage.setItem('vw_extra_vragen',   JSON.stringify(data.vw_extra_vragen));
+      if (data.vw_vraag_volgorde !== undefined) localStorage.setItem('vw_vraag_volgorde', JSON.stringify(data.vw_vraag_volgorde));
+      renderAdminVacatures();
+      renderAdminSollicitaties();
+      renderAdminVragenPerVacature();
+      renderVacatureKeuze();
+      renderVraagEditLijst();
+      renderDynamicJobs();
+      alert('✅ Opslag succesvol geïmporteerd!\nExportdatum: ' + (data.exportDatum || 'onbekend'));
+    } catch(err) {
+      alert('❌ Fout bij importeren: het bestand lijkt geen geldig opslag.json bestand te zijn.');
+    }
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
 
 // ============================================================
 // NAVIGATIE
@@ -2074,7 +2211,7 @@ document.getElementById('confirmOverlay').addEventListener('click', function(e) 
   if (e.target === this) confirmAntwoord(false);
 });
 
-renderDynamicJobs();
+laadVanGitHub().then(() => renderDynamicJobs());
 </script>
 </body>
 </html>
